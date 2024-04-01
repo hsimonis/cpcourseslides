@@ -14,4 +14,4 @@ handout.pdf: handout.tex standalone.tex body.tex
 
 clean:
 	rm -f slides.pdf article.pdf handout.pdf
-	rm -f *.aux *.idx *.out *.snm *.tcp *.toc *.vrb *.tps *.log
+	rm -f *.aux *.idx *.out *.snm *.tcp *.toc *.vrb *.tps *.log *.nav
