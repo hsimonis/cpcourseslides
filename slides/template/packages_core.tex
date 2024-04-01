@@ -1,0 +1,153 @@
+
+\usepackage[medium]{ubuntu}  % May need to be installed separately from https://github.com/tzwenn/ubuntu-latex-fonts
+\usepackage{url}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+\usepackage{graphics}
+\usepackage{tikz}
+\usetikzlibrary{shapes,calc,through,backgrounds,arrows,automata,positioning}
+\tikzset{modelling/.style={fill=insight-royalblue!20,draw=black!40}}
+\tikzset{stakeholder/.style={fill=insight-lime!20,draw=black!40}}
+\tikzset{technology/.style={fill=insight-maroon!20,draw=black!40}}
+\tikzset{papers/.style={fill=insight-yellow,opacity=0.1,draw=black!40}}
+
+% Define block styles
+\tikzstyle{world} = [cloud, draw,cloud puffs=10,cloud puff arc=120, aspect=2, inner ysep=1em]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=4em, text centered, rounded corners, minimum height=3em]
+\tikzstyle{data} = [draw, ellipse,fill=red!20, minimum height=4em, minimum width=6em]
+\tikzstyle{line} = [draw, -latex]
+\tikzstyle{n} = [font=\itshape]
+
+
+\usepackage{multicol}
+\usepackage{subfigure}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\input{../template/insight-colors}
+\usepackage{xspace}
+\usepackage{mhchem}
+\usepackage{MnSymbol,wasysym}
+
+\newcommand{\sol}{\textsf{Solutions}\xspace}
+\newcommand{\pat}{\textsf{Generalisations/Patterns}\xspace}
+\newcommand{\obs}{\textsf{Observations}\xspace}
+
+\newcommand{\rcp}{\textsf{read-for-CP}\xspace}
+\newcommand{\wcp}{\textsf{write-from-CP}\xspace}
+\newcommand{\rdm}{\textsf{read-for-DM}\xspace}
+\newcommand{\rw}{\textsf{Apply-to-World}\xspace}
+\newcommand{\wdm}{\textsf{write-from-DM}\xspace}
+
+\newcommand{\evalw}{\ensuremath{eval\_world}\xspace}
+
+
+ 
+\usepackage{amssymb,marvosym}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{textpos}
+\usepackage{textcomp,pifont}
+\newcommand{\REM}[2]{\only<presentation>{\only<#1>{\textcolor{pantone116-14}{\ding{233} \textit{#2}}}}}
+\newcommand{\G}{\cellcolor[gray]{0.7}}
+\newcommand{\R}{\cellcolor[gray]{0.5}\ding{54}}
+\newcommand{\X}{\cellcolor[gray]{0.5}-}
+\newcommand{\D}{\cellcolor[gray]{0.5}|}
+\newcommand{\A}{\cellcolor{pantone72-16}} % dark red
+\newcommand{\Y}{\cellcolor{pantone10-7}} % yellow
+\newcommand{\F}{\cellcolor{pantone24-8}\ding{89}} % red
+\newcommand{\links}[1]{\href{../#1/VIDEO/web/web.html}{\beamerbutton{Video}}~\href{../#1/VIDEO/iphone/iphone.m4v}{\beamerbutton{iPhone}}~\href{../#1/slides.pdf}{\beamerbutton{Slides}}~\href{../#1/handout.pdf}{\beamerbutton{Handout}}~\href{http://4c114:8080/dokuwiki/doku.php?id=#1}{\beamerbutton{Wiki}}}
+\newcommand{\pred}[1]{\texttt{#1}}
+\mode<all>{
+\tikzset{router/.style={shape=circle,draw=pantone116-14,fill=pantone120-2,thick,inner sep=0pt,minimum size=6mm}}
+\tikzset{ring/.style={shape=circle,draw=pantone116-14,fill=pantone120-2,thick,inner sep=0pt,minimum size=6mm}}
+\tikzset{box/.style={shape=rectangle,draw=pantone116-14,fill=pantone120-2,thick,inner sep=0pt,minimum size=6mm}}
+}
+
+\usepackage{xcolor}
+
+\usepackage{pdfpages}
+
+\usepackage{pgfplots}
+\pgfplotsset{width=7cm,compat=1.15}
+%\usepackage[absolute,overlay]{textpos}
+
+\usepackage{amssymb}
+\usepackage{pifont}
+\newcommand{\greentick}{{\color{green}\checkmark}}
+\newcommand{\orangetick}{{\color{orange}(\checkmark)}}
+\newcommand{\redx}{{\color{red}\ding{55}}}
+
+\usepackage{adjustbox}
+
+\newcolumntype{R}[2]{%
+    >{\adjustbox{angle=#1,lap=\width-(#2)}\bgroup}%
+    l%
+    <{\egroup}%
+}
+\newcommand*\rot{\multicolumn{1}{R{45}{1em}}}% no optional argument here, please!
+
+\input{../template/mznlisting}
+\lstset{language=Mzn}
+
+\usepackage[english]{babel}
+% or whatever
+
+\usepackage[latin1]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+\mode<article>{
+\usepackage{makeidx}
+\makeindex
+\usepackage{fullpage}
+\usepackage{hyperref}
+}
+\hypersetup{pdfauthor={Helmut Simonis},pdfsubject={Introduction to Constraint Programming},pdfkeywords={Introduction
+    to Constraint Programming;ECLiPSe;ELearning;Saros;Constraint
+    Programming;Prolog;Logic Programming;Insight;Insight Centre for
+    Data Analytics;University College Cork;UCC;MiniZinc;CRT-AI;Choco-Solver;ACP Winterschool 2024}}
+
+\mode<presentation>{
+\author{Helmut Simonis}
+%\email{helmut.simonis@insight-centre.org}
+}
+\mode<article>{
+\author{Helmut Simonis\\%
+\\%
+email: \url{helmut.simonis@insight-centre.org}\\%
+homepage: \url{http://http://insight-centre.org/}\\%
+\\%
+Insight SFI Centre for Data Analytics\\%
+School of Computer Science and Information Technology\\%
+University College Cork\\
+Ireland}
+}
+\institute[Insight] % (optional, but mostly needed)
+{Insight SFI Centre for Data Analytics\\School of Computer Science and Information Technology\\University College Cork\\Ireland}
+
+\date[CP Week 2024] % (optional)
+{CRT-AI CP Week 2024}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+  \end{frame}
+}
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command: 
+
+%\beamerdefaultoverlayspecification{<+->}
+

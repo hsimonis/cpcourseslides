@@ -1,0 +1,143 @@
+\begin{thebibliography}{}
+
+\bibitem[Bosch, 2006]{DBLP:conf/cpaior/Bosch06}
+Bosch, R. (2006).
+\newblock Opt art.
+\newblock In Beck, J.~C. and Smith, B.~M., editors, {\em Integration of {AI}
+  and {OR} Techniques in Constraint Programming for Combinatorial Optimization
+  Problems, Third International Conference, {CPAIOR} 2006, Cork, Ireland, May
+  31 - June 2, 2006, Proceedings}, volume 3990 of {\em Lecture Notes in
+  Computer Science}, page~1. Springer.
+
+\bibitem[Cambazard et~al., 2011]{DBLP:journals/anor/CambazardHOO11}
+Cambazard, H., Horan, J., O'Mahony, E., and O'Sullivan, B. (2011).
+\newblock Domino portrait generation: a fast and scalable approach.
+\newblock {\em Ann. Oper. Res.}, 184(1):79--95.
+
+\bibitem[Dooms et~al., 2009]{DBLP:journals/constraints/DoomsHM09}
+Dooms, G., Hentenryck, P.~V., and Michel, L. (2009).
+\newblock Model-driven visualizations of constraint-based local search.
+\newblock {\em Constraints An Int. J.}, 14(3):294--324.
+
+\bibitem[Downing et~al., 2012]{DBLP:conf/acsc/DowningFS12}
+Downing, N., Feydy, T., and Stuckey, P.~J. (2012).
+\newblock Explaining alldifferent.
+\newblock In Reynolds, M. and Thomas, B.~H., editors, {\em Thirty-Fifth
+  Australasian Computer Science Conference, {ACSC} 2012, Melbourne, Australia,
+  January 2012}, volume 122 of {\em {CRPIT}}, pages 115--124. Australian
+  Computer Society.
+
+\bibitem[Fages et~al., 2004]{DBLP:journals/constraints/FagesSC04}
+Fages, F., Soliman, S., and Coolen, R. (2004).
+\newblock {CLPGUI:} {A} generic graphical user interface for constraint logic
+  programming.
+\newblock {\em Constraints An Int. J.}, 9(4):241--262.
+
+\bibitem[Gervet, 1998]{DBLP:conf/dimacs/Gervet98}
+Gervet, C. (1998).
+\newblock Large scale combinatorial optimization: {A} methodological viewpoint.
+\newblock In Freuder, E.~C. and Wallace, R.~J., editors, {\em Constraint
+  Programming and Large Scale Discrete Optimization, Proceedings of a {DIMACS}
+  Workshop, Princeton, New Jersey, USA, September 14-17, 1998}, volume~57 of
+  {\em {DIMACS} Series in Discrete Mathematics and Theoretical Computer
+  Science}, pages 151--175. {DIMACS/AMS}.
+
+\bibitem[Gupta et~al., 2021]{DBLP:conf/ijcai/GuptaGO21}
+Gupta, S.~D., Genc, B., and O'Sullivan, B. (2021).
+\newblock Explanation in constraint satisfaction: {A} survey.
+\newblock In Zhou, Z., editor, {\em Proceedings of the Thirtieth International
+  Joint Conference on Artificial Intelligence, {IJCAI} 2021, Virtual Event /
+  Montreal, Canada, 19-27 August 2021}, pages 4400--4407. ijcai.org.
+
+\bibitem[Howell et~al., 2020]{DBLP:conf/cp/HowellCY20}
+Howell, I., Choueiry, B.~Y., and Yu, H. (2020).
+\newblock Visualizations to summarize search behavior.
+\newblock In Simonis, H., editor, {\em Principles and Practice of Constraint
+  Programming - 26th International Conference, {CP} 2020, Louvain-la-Neuve,
+  Belgium, September 7-11, 2020, Proceedings}, volume 12333 of {\em Lecture
+  Notes in Computer Science}, pages 392--409. Springer.
+
+\bibitem[Howell et~al., 2018]{DBLP:conf/ijcai/HowellWCB18}
+Howell, I., Woodward, R.~J., Choueiry, B.~Y., and Bessiere, C. (2018).
+\newblock Solving sudoku with consistency: {A} visual and interactive approach.
+\newblock In Lang, J., editor, {\em Proceedings of the Twenty-Seventh
+  International Joint Conference on Artificial Intelligence, {IJCAI} 2018, July
+  13-19, 2018, Stockholm, Sweden}, pages 5829--5831. ijcai.org.
+
+\bibitem[Korikov and Beck, 2021]{Korikov2021}
+Korikov, A. and Beck, C. (2021).
+\newblock Counterfactual explanations via inverse constraint programming.
+\newblock In {\em Proceedings of CP 2021}.
+
+\bibitem[Korikov et~al., 2021]{DBLP:conf/ijcai/KorikovSB21}
+Korikov, A., Shleyfman, A., and Beck, J.~C. (2021).
+\newblock Counterfactual explanations for optimization-based decisions in the
+  context of the {GDPR}.
+\newblock In Zhou, Z., editor, {\em Proceedings of the Thirtieth International
+  Joint Conference on Artificial Intelligence, {IJCAI} 2021, Virtual Event /
+  Montreal, Canada, 19-27 August 2021}, pages 4097--4103. ijcai.org.
+
+\bibitem[Saket et~al., 2019]{DBLP:journals/tvcg/SaketED19}
+Saket, B., Endert, A., and Demiralp, {\c{C}}. (2019).
+\newblock Task-based effectiveness of basic visualizations.
+\newblock {\em {IEEE} Trans. Vis. Comput. Graph.}, 25(7):2505--2512.
+
+\bibitem[Schulte, 1997]{DBLP:conf/iclp/Schulte97}
+Schulte, C. (1997).
+\newblock Oz explorer: {A} visual constraint programming tool.
+\newblock In Naish, L., editor, {\em Logic Programming, Proceedings of the
+  Fourteenth International Conference on Logic Programming, Leuven, Belgium,
+  July 8-11, 1997}, pages 286--300. {MIT} Press.
+
+\bibitem[Shishmarev et~al., 2016]{DBLP:journals/constraints/ShishmarevMTB16}
+Shishmarev, M., Mears, C., Tack, G., and de~la Banda, M.~G. (2016).
+\newblock Visual search tree profiling.
+\newblock {\em Constraints An Int. J.}, 21(1):77--94.
+
+\bibitem[Simonis and Aggoun, 2000]{DBLP:conf/discipl/SimonisA00}
+Simonis, H. and Aggoun, A. (2000).
+\newblock Search-tree visualisation.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 191--208. Springer.
+
+\bibitem[Simonis et~al., 2000]{DBLP:conf/discipl/SimonisABB00}
+Simonis, H., Aggoun, A., Beldiceanu, N., and Bourreau, E. (2000).
+\newblock Complex constraint abstraction: Global constraint visualisation.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 299--317. Springer.
+
+\bibitem[Simonis et~al., 2010]{DBLP:conf/cp/SimonisDFMQC10}
+Simonis, H., Davern, P., Feldman, J., Mehta, D., Quesada, L., and Carlsson, M.
+  (2010).
+\newblock A generic visualization platform for {CP}.
+\newblock In Cohen, D., editor, {\em Principles and Practice of Constraint
+  Programming - {CP} 2010 - 16th International Conference, {CP} 2010, St.
+  Andrews, Scotland, UK, September 6-10, 2010. Proceedings}, volume 6308 of
+  {\em Lecture Notes in Computer Science}, pages 460--474. Springer.
+
+\bibitem[Simonis and O'Sullivan, 2011]{DBLP:conf/cpaior/SimonisO11}
+Simonis, H. and O'Sullivan, B. (2011).
+\newblock Almost square packing.
+\newblock In Achterberg, T. and Beck, J.~C., editors, {\em Integration of {AI}
+  and {OR} Techniques in Constraint Programming for Combinatorial Optimization
+  Problems - 8th International Conference, {CPAIOR} 2011, Berlin, Germany, May
+  23-27, 2011. Proceedings}, volume 6697 of {\em Lecture Notes in Computer
+  Science}, pages 196--209. Springer.
+
+\bibitem[Stepin et~al., 2021]{DBLP:journals/access/StepinACP21}
+Stepin, I., Alonso, J.~M., Catal{\'{a}}, A., and Pereira{-}Fari{\~{n}}a, M.
+  (2021).
+\newblock A survey of contrastive and counterfactual explanation generation
+  methods for explainable artificial intelligence.
+\newblock {\em {IEEE} Access}, 9:11974--12001.
+
+\bibitem[Verma et~al., 2020]{DBLP:journals/corr/abs-2010-10596}
+Verma, S., Dickerson, J.~P., and Hines, K. (2020).
+\newblock Counterfactual explanations for machine learning: {A} review.
+\newblock {\em CoRR}, abs/2010.10596.
+
+\end{thebibliography}

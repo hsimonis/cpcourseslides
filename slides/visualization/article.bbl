@@ -1,0 +1,237 @@
+\begin{thebibliography}{}
+
+\bibitem[Bosch, 2006]{DBLP:conf/cpaior/Bosch06}
+Bosch, R. (2006).
+\newblock Opt art.
+\newblock In Beck, J.~C. and Smith, B.~M., editors, {\em Integration of {AI}
+  and {OR} Techniques in Constraint Programming for Combinatorial Optimization
+  Problems, Third International Conference, {CPAIOR} 2006, Cork, Ireland, May
+  31 - June 2, 2006, Proceedings}, volume 3990 of {\em Lecture Notes in
+  Computer Science}, page~1. Springer.
+
+\bibitem[Cambazard et~al., 2011]{DBLP:journals/anor/CambazardHOO11}
+Cambazard, H., Horan, J., O'Mahony, E., and O'Sullivan, B. (2011).
+\newblock Domino portrait generation: a fast and scalable approach.
+\newblock {\em Ann. Oper. Res.}, 184(1):79--95.
+
+\bibitem[Cameron et~al., 2003]{DBLP:conf/ppdp/CameronBMM03}
+Cameron, M., de~la Banda, M. J.~G., Marriott, K., and Moulder, P. (2003).
+\newblock Vimer: a visual debugger for mercury.
+\newblock In {\em Proceedings of the 5th International {ACM} {SIGPLAN}
+  Conference on Principles and Practice of Declarative Programming, 27-29
+  August 2003, Uppsala, Sweden}, pages 56--66. {ACM}.
+
+\bibitem[Carro and Hermenegildo, 1998]{DBLP:conf/agp/CarroH98}
+Carro, M. and Hermenegildo, M.~V. (1998).
+\newblock Some design issues in the visualization of constraint logic program
+  execution.
+\newblock In Freire{-}Nistal, J.~L., Falaschi, M., and Ferro, M.~V., editors,
+  {\em 1998 Joint Conference on Declarative Programming, APPIA-GULP-PRODE'98,
+  {A} Coru{\~{n}}a, Spain, July 20-23, 1998}, pages 71--86.
+
+\bibitem[Carro and Hermenegildo, 2000a]{DBLP:conf/discipl/CarroH00a}
+Carro, M. and Hermenegildo, M.~V. (2000a).
+\newblock Tools for constraint visualisation: The {VIFID/TRIFID} tool.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 253--272. Springer.
+
+\bibitem[Carro and Hermenegildo, 2000b]{DBLP:conf/discipl/CarroH00}
+Carro, M. and Hermenegildo, M.~V. (2000b).
+\newblock Tools for search-tree visualisation: The {APT} tool.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 237--252. Springer.
+
+\bibitem[Deransart, 2004]{DBLP:conf/iclp/Deransart04}
+Deransart, P. (2004).
+\newblock Main results of the {OADymPPaC} project.
+\newblock In Demoen, B. and Lifschitz, V., editors, {\em Logic Programming,
+  20th International Conference, {ICLP} 2004, Saint-Malo, France, September
+  6-10, 2004, Proceedings}, volume 3132 of {\em Lecture Notes in Computer
+  Science}, pages 456--457. Springer.
+
+\bibitem[Deransart et~al., 2000]{DBLP:conf/discipl/DeransartHM00}
+Deransart, P., Hermenegildo, M.~V., and Maluszynski, J. (2000).
+\newblock Debugging of constraint programs: The {DiSCiPl} methodology and tools
+  - introduction.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 1--20. Springer.
+
+\bibitem[Dooms et~al., 2009]{DBLP:journals/constraints/DoomsHM09}
+Dooms, G., Hentenryck, P.~V., and Michel, L. (2009).
+\newblock Model-driven visualizations of constraint-based local search.
+\newblock {\em Constraints An Int. J.}, 14(3):294--324.
+
+\bibitem[Downing et~al., 2012]{DBLP:conf/acsc/DowningFS12}
+Downing, N., Feydy, T., and Stuckey, P.~J. (2012).
+\newblock Explaining alldifferent.
+\newblock In Reynolds, M. and Thomas, B.~H., editors, {\em Thirty-Fifth
+  Australasian Computer Science Conference, {ACSC} 2012, Melbourne, Australia,
+  January 2012}, volume 122 of {\em {CRPIT}}, pages 115--124. Australian
+  Computer Society.
+
+\bibitem[Fages et~al., 2004]{DBLP:journals/constraints/FagesSC04}
+Fages, F., Soliman, S., and Coolen, R. (2004).
+\newblock {CLPGUI:} {A} generic graphical user interface for constraint logic
+  programming.
+\newblock {\em Constraints An Int. J.}, 9(4):241--262.
+
+\bibitem[Gervet, 1998]{DBLP:conf/dimacs/Gervet98}
+Gervet, C. (1998).
+\newblock Large scale combinatorial optimization: {A} methodological viewpoint.
+\newblock In Freuder, E.~C. and Wallace, R.~J., editors, {\em Constraint
+  Programming and Large Scale Discrete Optimization, Proceedings of a {DIMACS}
+  Workshop, Princeton, New Jersey, USA, September 14-17, 1998}, volume~57 of
+  {\em {DIMACS} Series in Discrete Mathematics and Theoretical Computer
+  Science}, pages 151--175. {DIMACS/AMS}.
+
+\bibitem[Ghoniem et~al., 2005]{DBLP:conf/softvis/GhoniemCFJ05}
+Ghoniem, M., Cambazard, H., Fekete, J., and Jussien, N. (2005).
+\newblock Peeking in solver strategies using explanations visualization of
+  dynamic graphs for constraint programming.
+\newblock In Naps, T.~L. and Pauw, W.~D., editors, {\em Proceedings of the
+  {ACM} 2005 Symposium on Software Visualization, St. Louis, Missouri, USA, May
+  14-15, 2005}, pages 27--36. {ACM}.
+
+\bibitem[Goodwin et~al., 2017]{DBLP:journals/tvcg/GoodwinMDBTW17}
+Goodwin, S., Mears, C., Dwyer, T., de~la Banda, M.~G., Tack, G., and Wallace,
+  M. (2017).
+\newblock What do constraint programming users want to see? exploring the role
+  of visualisation in profiling of models and search.
+\newblock {\em {IEEE} Trans. Vis. Comput. Graph.}, 23(1):281--290.
+
+\bibitem[Gupta et~al., 2021]{DBLP:conf/ijcai/GuptaGO21}
+Gupta, S.~D., Genc, B., and O'Sullivan, B. (2021).
+\newblock Explanation in constraint satisfaction: {A} survey.
+\newblock In Zhou, Z., editor, {\em Proceedings of the Thirtieth International
+  Joint Conference on Artificial Intelligence, {IJCAI} 2021, Virtual Event /
+  Montreal, Canada, 19-27 August 2021}, pages 4400--4407. ijcai.org.
+
+\bibitem[Howell et~al., 2020]{DBLP:conf/cp/HowellCY20}
+Howell, I., Choueiry, B.~Y., and Yu, H. (2020).
+\newblock Visualizations to summarize search behavior.
+\newblock In Simonis, H., editor, {\em Principles and Practice of Constraint
+  Programming - 26th International Conference, {CP} 2020, Louvain-la-Neuve,
+  Belgium, September 7-11, 2020, Proceedings}, volume 12333 of {\em Lecture
+  Notes in Computer Science}, pages 392--409. Springer.
+
+\bibitem[Howell et~al., 2018]{DBLP:conf/ijcai/HowellWCB18}
+Howell, I., Woodward, R.~J., Choueiry, B.~Y., and Bessiere, C. (2018).
+\newblock Solving sudoku with consistency: {A} visual and interactive approach.
+\newblock In Lang, J., editor, {\em Proceedings of the Twenty-Seventh
+  International Joint Conference on Artificial Intelligence, {IJCAI} 2018, July
+  13-19, 2018, Stockholm, Sweden}, pages 5829--5831. ijcai.org.
+
+\bibitem[Korikov and Beck, 2021]{Korikov2021}
+Korikov, A. and Beck, C. (2021).
+\newblock Counterfactual explanations via inverse constraint programming.
+\newblock In {\em Proceedings of CP 2021}.
+
+\bibitem[Korikov et~al., 2021]{DBLP:conf/ijcai/KorikovSB21}
+Korikov, A., Shleyfman, A., and Beck, J.~C. (2021).
+\newblock Counterfactual explanations for optimization-based decisions in the
+  context of the {GDPR}.
+\newblock In Zhou, Z., editor, {\em Proceedings of the Thirtieth International
+  Joint Conference on Artificial Intelligence, {IJCAI} 2021, Virtual Event /
+  Montreal, Canada, 19-27 August 2021}, pages 4097--4103. ijcai.org.
+
+\bibitem[Leo and Tack, 2017]{DBLP:conf/cpaior/LeoT17}
+Leo, K. and Tack, G. (2017).
+\newblock Debugging unsatisfiable constraint models.
+\newblock In Salvagnin, D. and Lombardi, M., editors, {\em Integration of {AI}
+  and {OR} Techniques in Constraint Programming - 14th International
+  Conference, {CPAIOR} 2017, Padua, Italy, June 5-8, 2017, Proceedings}, volume
+  10335 of {\em Lecture Notes in Computer Science}, pages 77--93. Springer.
+
+\bibitem[Liu et~al., 2021]{DBLP:journals/tvcg/LiuDTGM21}
+Liu, J., Dwyer, T., Tack, G., Gratzl, S., and Marriott, K. (2021).
+\newblock Supporting the problem-solving loop: Designing highly interactive
+  optimisation systems.
+\newblock {\em {IEEE} Trans. Vis. Comput. Graph.}, 27(2):1764--1774.
+
+\bibitem[Meier, 1995]{DBLP:conf/cp/Meier95}
+Meier, M. (1995).
+\newblock Debugging constraint programs.
+\newblock In Montanari, U. and Rossi, F., editors, {\em Principles and Practice
+  of Constraint Programming - CP'95, First International Conference, CP'95,
+  Cassis, France, September 19-22, 1995, Proceedings}, volume 976 of {\em
+  Lecture Notes in Computer Science}, pages 204--221. Springer.
+
+\bibitem[Saket et~al., 2019]{DBLP:journals/tvcg/SaketED19}
+Saket, B., Endert, A., and Demiralp, {\c{C}}. (2019).
+\newblock Task-based effectiveness of basic visualizations.
+\newblock {\em {IEEE} Trans. Vis. Comput. Graph.}, 25(7):2505--2512.
+
+\bibitem[Schulte, 1997]{DBLP:conf/iclp/Schulte97}
+Schulte, C. (1997).
+\newblock Oz explorer: {A} visual constraint programming tool.
+\newblock In Naish, L., editor, {\em Logic Programming, Proceedings of the
+  Fourteenth International Conference on Logic Programming, Leuven, Belgium,
+  July 8-11, 1997}, pages 286--300. {MIT} Press.
+
+\bibitem[Shishmarev et~al., 2016]{DBLP:journals/constraints/ShishmarevMTB16}
+Shishmarev, M., Mears, C., Tack, G., and de~la Banda, M.~G. (2016).
+\newblock Visual search tree profiling.
+\newblock {\em Constraints An Int. J.}, 21(1):77--94.
+
+\bibitem[Simonis and Aggoun, 2000]{DBLP:conf/discipl/SimonisA00}
+Simonis, H. and Aggoun, A. (2000).
+\newblock Search-tree visualisation.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 191--208. Springer.
+
+\bibitem[Simonis et~al., 2000a]{DBLP:conf/discipl/SimonisABB00}
+Simonis, H., Aggoun, A., Beldiceanu, N., and Bourreau, E. (2000a).
+\newblock Complex constraint abstraction: Global constraint visualisation.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 299--317. Springer.
+
+\bibitem[Simonis et~al., 2000b]{DBLP:conf/discipl/SimonisCDFNT00}
+Simonis, H., Cornelissens, T., Dumortier, V., Fabris, G., Nanni, F., and
+  Tirabosco, A. (2000b).
+\newblock Using constraint visualisation tools.
+\newblock In Deransart, P., Hermenegildo, M.~V., and Maluszynski, J., editors,
+  {\em Analysis and Visualization Tools for Constraint Programming, Constrain
+  Debugging (DiSCiPl project)}, volume 1870 of {\em Lecture Notes in Computer
+  Science}, pages 321--356. Springer.
+
+\bibitem[Simonis et~al., 2010]{DBLP:conf/cp/SimonisDFMQC10}
+Simonis, H., Davern, P., Feldman, J., Mehta, D., Quesada, L., and Carlsson, M.
+  (2010).
+\newblock A generic visualization platform for {CP}.
+\newblock In Cohen, D., editor, {\em Principles and Practice of Constraint
+  Programming - {CP} 2010 - 16th International Conference, {CP} 2010, St.
+  Andrews, Scotland, UK, September 6-10, 2010. Proceedings}, volume 6308 of
+  {\em Lecture Notes in Computer Science}, pages 460--474. Springer.
+
+\bibitem[Simonis and O'Sullivan, 2011]{DBLP:conf/cpaior/SimonisO11}
+Simonis, H. and O'Sullivan, B. (2011).
+\newblock Almost square packing.
+\newblock In Achterberg, T. and Beck, J.~C., editors, {\em Integration of {AI}
+  and {OR} Techniques in Constraint Programming for Combinatorial Optimization
+  Problems - 8th International Conference, {CPAIOR} 2011, Berlin, Germany, May
+  23-27, 2011. Proceedings}, volume 6697 of {\em Lecture Notes in Computer
+  Science}, pages 196--209. Springer.
+
+\bibitem[Stepin et~al., 2021]{DBLP:journals/access/StepinACP21}
+Stepin, I., Alonso, J.~M., Catal{\'{a}}, A., and Pereira{-}Fari{\~{n}}a, M.
+  (2021).
+\newblock A survey of contrastive and counterfactual explanation generation
+  methods for explainable artificial intelligence.
+\newblock {\em {IEEE} Access}, 9:11974--12001.
+
+\bibitem[Verma et~al., 2020]{DBLP:journals/corr/abs-2010-10596}
+Verma, S., Dickerson, J.~P., and Hines, K. (2020).
+\newblock Counterfactual explanations for machine learning: {A} review.
+\newblock {\em CoRR}, abs/2010.10596.
+
+\end{thebibliography}
