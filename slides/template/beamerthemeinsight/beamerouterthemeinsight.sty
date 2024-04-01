@@ -1,0 +1,76 @@
+\RequirePackage{calc}
+\RequirePackage{ifthen}
+
+\mode<presentation>
+
+
+\pgfdeclareimage[width=\paperwidth]{insightTitleBackground}{beamerthemeinsight/insight_title_slide_background.png}
+\pgfdeclareimage[width=\paperwidth]{insightSlideBackground}{beamerthemeinsight/insight_slide_background.png}
+
+
+\defbeamertemplate*{navigation symbols}{}  %remove navigation symbols
+
+\defbeamertemplate*{footline}{}{
+  \ifnum\c@framenumber=1\else
+    \usebeamerfont{footer}
+    \usebeamercolor[fg]{footer}
+    \vspace{20px}  % Specify gap for the Insight footer background
+
+    \pgftext[left,bottom,at=\pgfpoint{0.05\paperwidth}{0.025\paperwidth}]{
+      Insight Centre for Data Analytics
+    }
+
+    % Slide number and date on the bottom right
+    \pgftext[right,bottom,at=\pgfpoint{0.95\paperwidth}{0.025\paperwidth}]{
+      Slide \insertframenumber
+    }
+    \pgftext[right,bottom,at=\pgfpoint{0.75\paperwidth}{0.025\paperwidth}]{
+      \insertshortdate
+    }
+  \fi
+}
+
+
+% ---------- Background images ----------
+\defbeamertemplate*{background canvas}{} {
+  \ifnum\c@framenumber=1
+    \pgfuseimage{insightTitleBackground}
+  \else
+    \pgfuseimage{insightSlideBackground}
+  \fi
+}
+
+
+% ---------- Title Frame Layout ----------
+\defbeamertemplate*{title page}{}{
+  \vskip9ex
+  \raggedright
+  \usebeamerfont{title}
+  \usebeamercolor[fg]{title}
+  \inserttitle\par
+
+  \ifx\insertsubtitle\@empty
+  \else
+    \vskip2ex
+    {\raggedright\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}
+  \fi
+  \vfill
+
+  \ifx\insertauthor\@empty
+  \else
+    \vskip2ex
+    {\raggedright\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}
+  \fi
+  \vfill
+
+  \ifx\insertdate\@empty
+  \else
+    \vskip2ex
+    {\raggedright\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}
+  \fi
+}
+
+\setbeamertemplate{itemize item}{\vspace{-1ex}\small\raise0.5pt\hbox{\textbullet}}
+\setbeamertemplate{itemize subitem}{\vspace{-1ex}\footnotesize\raise0.5pt\hbox{\textbullet}}
+\setbeamertemplate{itemize subsubitem}{\vspace{-1ex}\footnotesize\raise0.5pt\hbox{\textbullet}}
+\setbeamersize{description width={2ex}}  % Label with in description env is huge by default, reduce it.
