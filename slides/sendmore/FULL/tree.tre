@@ -1,0 +1,12 @@
+TRY 1 0 S - -
+TRY 2 1 E 9 f
+FAIL 3 2 E 4 v
+TRY 4 2 N 5 v
+TRY 5 4 D 6 f
+TRY 6 5 M 7 f
+TRY 7 6 O 1 f
+TRY 8 7 R 0 f
+TRY 9 8 Y 8 f
+SUCCESS 10 9 2 f
+FAIL 11 2 E 6 v
+FAIL 12 2 E 7 v

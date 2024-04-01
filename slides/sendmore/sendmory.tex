@@ -1,0 +1,821 @@
+\documentclass[a4paper]{article}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{pstricks,pst-node,pst-tree,graphics}
+\usepackage{amssymb,marvosym}
+\usepackage{colortbl}
+\newcommand{\CC}[1]{\Tcircle[linestyle=solid]{#1}}
+\newcommand{\CURR}{\Tcircle[fillstyle=solid,fillcolor=blue,linestyle=solid]{.}}
+\newcommand{\FAIL}{\Tcircle[fillstyle=solid,fillcolor=red,linestyle=solid]{X}}
+\newcommand{\SUCC}{\Tcircle[fillstyle=solid,fillcolor=green,linestyle=solid]{\checkmark}}
+\newcommand{\G}{\cellcolor[gray]{0.8}}
+\newcommand{\A}{\cellcolor[rgb]{0.8,0,0}}
+\begin{document}
+\title{Chapter 5: The Finite Domain Solver}
+\author{H. Simonis\\
+4C, University College Cork, Ireland\\
+\url{h.simonis@4c.ucc.ie}}
+
+\maketitle
+
+\begin{abstract}
+In this part, we introduce the finite domain solver of the ECLiPSe system by way of examples. We start with a crypt-arithmetic puzzle, the well known SEND+MORE=MONEY problem, to introduce the basic concepts of domain variables and constraints, propagation and search.
+
+In a second part, we look at the Sudoku puzzle, a Japanese number puzzle which introduces the ideas of global constraints, consistency levels and heuristic search methods.
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+\lstset{escapechar=@,frame=lines,emph={alldifferent,labeling,::,module,export,lib},emphstyle=\bf,numbers=left,numberstyle=\tiny,language=Prolog}
+
+\section{Problem}
+We begin with the definition of the SEND+MORE=MONEY puzzle. It is often shown in the form of a hand-written addition:
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tabular}{rrrrr}
+  & S & E & N & D \\
++ & M & O & R & E \\ \hline
+M & O & N & E & Y
+\end{tabular}
+\end{center}
+\vspace{0.5cm}
+
+This is an example of a crypt-arithmetic puzzle, and is one of the classical, early examples of constraint programming. The puzzle is defined by the following rules:
+
+\begin{itemize}
+\item Each character stands for a digit from 0 to 9.
+\item Numbers are built from digits in the usual, positional notation. 
+\item Repeated occurrence of the same character denote the same digit.
+\item Different characters denote different digits.
+\item Numbers do not start with a zero.
+\item The equation must hold.
+\end{itemize}
+
+\section{Model}
+If we want to model this problem as a finite domain constraint problem, we have to define variables and constraints. {\em Variables} range over {\em domains}, which describe the possible values they can take. In this section we consider only finite domains, indeed only finite domains expressed as finite subsets of natural numbers. We will consider constraint problems with infinite domains in a later section. An {\em assignment} is a mapping of the variables to values in their respective domains.
+
+A {\em constraint} ranges over one or multiple variables and expresses a condition which must hold between these variables. Constraints can take many forms, they may be explicit, describing combinations of values that are allowed or excluded, or symbolic, for example in the form of arithmetic constraints. Formally, we can see a constraint as a subset of the Cartesian product of the domains of its variables. An assignment {\em satisfies} a constraint if its projection on the variables of the constraint belong to this constraint subset.
+
+An assignment of values to variables is a {\em solution} if all constraints are satisfied.
+
+For many problems, we have considerable choices in selecting the variables and constraints of our problem. Often, models differ dramatically in the number of variables needed, the complexity and number of constraints used to describe the problem, and the speed by which a constraint solver can find a solution.
+
+For the small puzzle considered here, the choice of the variables is fairly obvious: Each character is a variable, which ranges over the values 0 to 9.
+
+For the constraints, a natural description would be:
+\begin{itemize}
+\item An {\em alldifferent} constraint between all variables, which state that two different variables must have different values. This is a very common constraint, which we will encounter in many other problems later on.
+\item Two {\em disequality constraints} (variable $X$ must be different from value $V$) stating that the variables at the beginning of a number can not take the value 0.
+\item An arithmetic {\em equality constraint} linking all variables with the proper coefficients and stating that the equation must hold.
+\end{itemize}
+Remember that this is not the only model of this problem, we will discuss some alternatives later on.
+
+\section{Program}
+\begin{lstlisting}[float,label=sendmory,caption=Program Sendmory]
+:-module(sendmory).@\label{module}@
+:-export(sendmory/1).@\label{export}@
+:-lib(ic).@\label{ic}@
+
+sendmory(L):-@\label{predicate}@
+     L = [S,E,N,D,M,O,R,Y], @\label{list}@
+     L :: 0..9,@\label{domain}@
+     alldifferent(L),@\label{alldifferent}@
+     S #\= 0,@\label{disequality}@
+     M #\= 0,@\label{disequality2}@
+     1000*S + 100*E + 10*N + D + 
+     1000*M + 100*O + 10*R + E #= @\label{equality}@
+     10000*M + 1000*O + 100*N + 10*E + Y,
+     labeling(L).@\label{search}@
+\end{lstlisting}
+The program shown in Listing~\ref{sendmory} is an example of a finite domain constraint program in ECLiPSe, which implements our model above.
+
+Line~\ref{module} shows the module declaration. Each file should be a module, and there should be one module per file. All predicates defined in a module are only visible inside the module, unless they are exported.
+
+Line~\ref{export} shows an export directive. It states that the predicate sendmory with arity one (with one argument) should be exported from this module.
+
+Line~\ref{ic} contains a library directive. We are loading the {\em ic} library, which defines the {\em I}nterval {\em C}onstraints in the ECLiPSe language.
+ 
+Lines~\ref{predicate}-\ref{search} define the sendmory predicate which is the core of our model. It consists of a single clause with the clause head \verb$sendmory(L)$. The clause has a single argument $L$, which is a list of variables as defined in line~\ref{list}. The square brackets denote lists in Prolog.
+
+We next define the domain of the variables in line~\ref{domain}. The infix operator \verb$::$ takes a variable or list of variables as the first (left) argument, and a domain (here 0..9) as the second (right) argument.
+
+We then express the {\em alldifferent} constraint in line~\ref{alldifferent}. This constraint is a built-in constraint in the ic library, and is thus shown in bold.
+
+Lines~\ref{disequality}-\ref{disequality2} express the two disequality constraints. The ic library defines the operator \verb$#\=$ for this purpose.
+
+The big linear equality constraint is expressed in line~\ref{equality}. The operator \verb$#=$ is used in the ic library.
+
+Finally, we call the builtin search routine {\em labeling} to assign values to the variables.
+
+\section{Running the program}
+To run the program, we have to enter the query
+\begin{verbatim}
+sendmory:sendmory(L).
+\end{verbatim}
+which says we want to run query \verb$sendmory(L)$ in the module {\em sendmory}.
+The program returns the answer
+\begin{verbatim}
+L = [9, 5, 6, 7, 1, 0, 8, 2]
+yes (0.00s cpu, solution 1, maybe more)
+\end{verbatim}
+This is a solution to the puzzle, as a quick check will show.
+
+But how did the program come up with this solution?
+
+\section{Constraint Setup}
+
+We will now discuss how the ECLiPSe program did find the solution. For this, we will run through the program step by step, and explain the reasoning of the constraint engine at each step. The presentation is not intented to explain the details of the implementation, but should rather show the reasoning involved, presented in a human readable form.
+
+\subsection{Domain Definition (line~\ref{domain}):}
+\[
+[S,E,N,D,M,O,R,Y] \in \{0..9\}
+\]
+
+Figure~\ref{Initial Domains} shows the state of the domain variables at this point. Each line shows one variable, each column one value. Initially, all values are allowed for all variables, this is indicated by white cells.
+ 
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}\hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+S &   &   &   &   &   &   &   &   &   &   \\ \hline
+E &   &   &   &   &   &   &   &   &   &   \\ \hline
+N &   &   &   &   &   &   &   &   &   &   \\ \hline
+D &   &   &   &   &   &   &   &   &   &   \\ \hline
+M &   &   &   &   &   &   &   &   &   &   \\ \hline
+O &   &   &   &   &   &   &   &   &   &   \\ \hline
+R &   &   &   &   &   &   &   &   &   &   \\ \hline
+Y &   &   &   &   &   &   &   &   &   &   \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{Initial Domains}Initial Domains}
+\end{table}
+
+\subsection{Setup of alldifferent (line~\ref{alldifferent})}
+
+When the alldifferent constraint is first called, all variables have the same domain, none of the variables are assigned. At this point, the constraint can not do any propagation, it therefore just suspends and waits until one of its variables is changed either by other constraints or as part of the search routine.
+
+
+\subsection{Disequality constraints (lines~\ref{disequality}-\ref{disequality2}):}
+
+The program now handles the two disequality constraints. As each constraint only deals with a single variable, we can solve them by removing the value from the domain of the variable. This leads to an update in two of the domains:
+\[
+S \in \{1..9\}, M \in \{1..9\}
+\]
+\marginpar{\scalebox{0.5}{\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}\hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+S &\G &   &   &   &   &   &   &   &   &   \\ \hline
+E &   &   &   &   &   &   &   &   &   &   \\ \hline
+N &   &   &   &   &   &   &   &   &   &   \\ \hline
+D &   &   &   &   &   &   &   &   &   &   \\ \hline
+M &\G &   &   &   &   &   &   &   &   &   \\ \hline
+O &   &   &   &   &   &   &   &   &   &   \\ \hline
+R &   &   &   &   &   &   &   &   &   &   \\ \hline
+Y &   &   &   &   &   &   &   &   &   &   \\ \hline
+\end{tabular}
+}}The two disequality constraint are now solved, they can be discarded.
+
+Table~\ref{After Disequality Constraints} shows the state of the variables after these steps, only two cell have been colored gray to indicate that the values have been removed.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}\hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+S &\G &   &   &   &   &   &   &   &   &   \\ \hline
+E &   &   &   &   &   &   &   &   &   &   \\ \hline
+N &   &   &   &   &   &   &   &   &   &   \\ \hline
+D &   &   &   &   &   &   &   &   &   &   \\ \hline
+M &\G &   &   &   &   &   &   &   &   &   \\ \hline
+O &   &   &   &   &   &   &   &   &   &   \\ \hline
+R &   &   &   &   &   &   &   &   &   &   \\ \hline
+Y &   &   &   &   &   &   &   &   &   &   \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{After Disequality Constraints}After Disequality Constraints}
+\end{table}
+
+\subsection{Equality Constraint}
+The next constraint encountered is the equality constraint in line~\ref{equality}. The processing of this constraint is more complex, we start with a normalisation of the constraint.
+
+\subsubsection{Normalization}
+
+The constraint as stated contains multiple occurrences of the same variable. In a first step, we reduce these multiple occurences by adding their coefficients. For didactic purposes, we avoid negative coefficients by placing terms both on the left and the right hand side of the equation.
+
+\paragraph{Original equation:}
+The original constraint, written in tabular form, looks like this.
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 100*E+ & 10*N+ & D \\
+& +1000*M+ & 100*O+ & 10*R+ & E \\ \hline
+10000*M+ & 1000*O+ & 100*N+ & 10*E+ & Y
+\end{tabular}
+
+\paragraph{Variable M occurs twice:} In a first step, we simplify occurences of variable $M$.
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 100*E+ & 10*N+ & D \\
+& +{\bf 1000*M}+ & 100*O+ & 10*R+ & E \\ \hline
+{\bf 10000*M}+ & 1000*O+ & 100*N+ & 10*E+ & Y
+\end{tabular}
+
+Simplified equation:
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 100*E+ & 10*N+ & D \\
+& + & 100*O+ & 10*R+ & E \\ \hline
+{\bf 9000*M}+ & 1000*O+ & 100*N+ & 10*E+ & Y
+\end{tabular}
+
+\paragraph{Variable O occurs twice:} Next we treat variable $O$. Note that the normalization is not implemented this way in the constraint solver, we just want to show each step individually.
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 100*E+ & 10*N+ & D \\
+& + & {\bf 100*O}+ & 10*R+ & E \\ \hline
+9000*M+ & {\bf 1000*O}+ & 100*N+ & 10*E+ & Y
+\end{tabular}
+
+Simplified equation:
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 100*E+ & 10*N+ & D \\
+&  & + & 10*R+ & E \\ \hline
+9000*M+ & {\bf 900*O}+ & 100*N+ & 10*E+ & Y
+\end{tabular}
+
+\paragraph{Variable N occurs twice:} Variable $N$ also occurs twice.
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 100*E+ & {\bf 10*N}+ & D \\
+&  & + & 10*R+ & E \\ \hline
+9000*M+ & 900*O+ & {\bf 100*N}+ & 10*E+ & Y
+\end{tabular}
+
+Simplified Equation: 
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 100*E+ &  & D \\
+&  & + & 10*R+ & E \\ \hline
+9000*M+ & 900*O+ & {\bf 90*N}+ & 10*E+ & Y
+\end{tabular}
+
+\paragraph{Variable E occurs three times:} The last variable to be handled is variable $E$.
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & {\bf 100*E}+ &  & D \\
+&  & + & 10*R+ & {\bf E} \\ \hline
+9000*M+ & 900*O+ & 90*N+ & {\bf 10*E}+ & Y
+\end{tabular}
+
+Simplified equation:
+
+\begin{tabular}{rrrrr}
+& 1000*S+ & 91*E+ &  & D \\
+&  & + & 10*R &  \\ \hline
+9000*M+ & 900*O+ & 90*N+ &  & Y
+\end{tabular}
+
+\paragraph{Final equation:}
+The final version of the equation can be written in a single line:
+
+\[
+1000*S + 91*E + 10*R + D = 9000*M + 900*O+ 90*N + Y
+\]
+
+
+
+\subsubsection{Propagation}
+We now look at the initial propagation of the equality constraint, while noting that the alldifferent constraint is suspended, but will be woken when variables are fixed to values.
+
+\paragraph{Propagation of equality}
+
+The reasoning of the equality constraint is based on an evaluation of the left and right hand of the equation. We can do this by checking the domains of all variables involved. In the following, the notation $X^{l..h}$ denotes the variable $X$ with a current domain of $l..h$.
+\begin{eqnarray*}
+\lefteqn{1000*S^{1..9} + 91*E^{0..9} + 10*R^{0..9} + D^{0..9}  =}\\ 
+& & 9000*M^{1..9} + 900*O^{0..9}+ 90*N^{0..9} + Y^{0..9} 
+\end{eqnarray*}
+We compute lower and upper bounds of each side of the equation based on the domains and the coefficients of the variables. This leads to the following intervals:
+\begin{eqnarray*}
+\lefteqn{\underbrace{1000*S^{1..9} + 91*E^{0..9} + 10*R^{0..9} + D^{0..9}}_{1000..9918} =} \\
+& & \underbrace{9000*M^{1..9} + 900*O^{0..9}+ 90*N^{0..9} + Y^{0..9}}_{9000..89919}
+\end{eqnarray*}
+If the equation holds, then both sides must be equal. We can therefore use the intersection of the intervals as the range of values that we have to consider for the equation:
+\begin{eqnarray*}
+\lefteqn{\underbrace{1000*S^{1..9} + 91*E^{0..9} + 10*R^{0..9} + D^{0..9}}_{9000..9918} =} \\
+& & \underbrace{9000*M^{1..9} + 900*O^{0..9}+ 90*N^{0..9} + Y^{0..9}}_{9000..9918}
+\end{eqnarray*}
+
+We now check for each variable if their lower resp. upper bounds are consistent with that value range. For example, $M$ can be atmost 1, otherwise its contribution would exceed the range limit set by the equation. In a similar way, $S$ must be at least 9, otherwise the left hand side can not reach the lower bound of 9000. Finally, the variable $O$ can be atmost 1. 
+
+This leads to the following domain reductions:
+
+\[
+M = 1, S = 9, O \in \{0..1\}
+\]
+
+\paragraph{Propagation of alldifferent:} This assignment wakes up the alldifferent constraint, which further reduces the domains of the variables.
+
+\[
+O = 0, [E,R,D,N,Y] \in \{2..8\}
+\]
+
+\paragraph{Resulting equation:} The domain changes wake up the equality constraint again. It now takes the following form:
+
+\[
+1000*9 + 91*E^{2..8} + 10*R^{2..8} + D^{2..8} = 9000*1 + 900*0+ 90*N^{2..8} + Y^{2..8}
+\]
+
+\paragraph{Removal of constants} We first remove the constant values in the equality constraint, this makes the example easier to follow.
+
+\[
+91*E^{2..8}+10*R^{2..8}+D^{2..8} = 90*N^{2..8}+Y^{2..8}
+\]
+
+\paragraph{Propagation of equality:}
+
+\[
+\underbrace{91*E^{2..8}+10*R^{2..8}+D^{2..8}}_{204..816} = \underbrace{90*N^{2..8}+Y^{2..8}}_{182..728}
+\]
+\[
+\underbrace{91*E^{2..8}+10*R^{2..8}+D^{2..8} = 90*N^{2..8}+Y^{2..8}}_{204..728}
+\]
+\[
+N > 2, E < 8
+\]
+
+\paragraph{Propagation of equality:}
+Each change of the domains of the variables triggers a re-execution of the equality constraint.
+\[
+91*E^{2..7}+10*R^{2..8}+D^{2..8} = 90*N^{3..8}+Y^{2..8}
+\]
+\[
+\underbrace{91*E^{2..7}+10*R^{2..8}+D^{2..8}}_{204..725} = \underbrace{90*N^{3..8}+Y^{2..8}}_{272..728}
+\]
+\[
+\underbrace{91*E^{2..7}+10*R^{2..8}+D^{2..8} = 90*N^{3..8}+Y^{2..8}}_{272..725}
+\]
+\[
+E > 2
+\]
+
+\paragraph{Propagation of equality:}
+\[
+91*E^{3..7}+10*R^{2..8}+D^{2..8} = 90*N^{3..8}+Y^{2..8}
+\]
+\[
+\underbrace{91*E^{3..7}+10*R^{2..8}+D^{2..8}}_{295..725} = \underbrace{90*N^{3..8}+Y^{2..8}}_{272..728}
+\]
+\[
+\underbrace{91*E^{3..7}+10*R^{2..8}+D^{2..8} = 90*N^{3..8}+Y^{2..8}}_{295..725}
+\]
+\[
+N > 3
+\]
+
+\paragraph{Propagation of equality:}
+
+\[
+91*E^{3..7}+10*R^{2..8}+D^{2..8} = 90*N^{4..8}+Y^{2..8}
+\]
+\[
+\underbrace{91*E^{3..7}+10*R^{2..8}+D^{2..8}}_{295..725} = \underbrace{90*N^{4..8}+Y^{2..8}}_{362..728}
+\]
+\[
+\underbrace{91*E^{3..7}+10*R^{2..8}+D^{2..8} = 90*N^{4..8}+Y^{2..8}}_{362..725}
+\]
+\[
+E > 3
+\]
+
+\paragraph{Propagation of equality:}
+
+\[
+91*E^{4..7}+10*R^{2..8}+D^{2..8} = 90*N^{4..8}+Y^{2..8}
+\]
+\[
+\underbrace{91*E^{4..7}+10*R^{2..8}+D^{2..8}}_{386..725} = \underbrace{90*N^{4..8}+Y^{2..8}}_{362..728}
+\]
+\[
+\underbrace{91*E^{4..7}+10*R^{2..8}+D^{2..8} = 90*N^{4..8}+Y^{2..8}}_{386..725}
+\]
+\[
+N > 4
+\]
+
+\paragraph{Propagation of equality:}
+
+\[
+91*E^{4..7}+10*R^{2..8}+D^{2..8} = 90*N^{5..8}+Y^{2..8}
+\]
+\[
+\underbrace{91*E^{4..7}+10*R^{2..8}+D^{2..8}}_{386..725} = \underbrace{90*N^{5..8}+Y^{2..8}}_{452..728}
+\]
+\[
+\underbrace{91*E^{4..7}+10*R^{2..8}+D^{2..8} = 90*N^{5..8}+Y^{2..8}}_{452..725}
+\]
+
+No further domain reduction is possible at this time. The propagation stops and the program continues with its normal execution. Figure~\ref{Domains after setup} shows the domains of the variables after the initial setup.
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}\hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+S &\G &\G &\G &\G &\G &\G &\G &\G &\G &\A \\ \hline
+E &\G &\G &\G &\G &   &   &   &   &\G &\G \\ \hline
+N &\G &\G &\G &\G &\G &   &   &   &   &\G \\ \hline
+D &\G &\G &   &   &   &   &   &   &   &\G \\ \hline
+M &\G &\A &\G &\G &\G &\G &\G &\G &\G &\G \\ \hline
+O &\A &\G &\G &\G &\G &\G &\G &\G &\G &\G \\ \hline
+R &\G &\G &   &   &   &   &   &   &   &\G \\ \hline
+Y & \G&\G &   &   &   &   &   &   &   &\G \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{Domains after setup}Domains after setup}
+\end{table}
+
+\section{Search}
+The predicate
+\begin{verbatim}
+labeling([S,E,N,D,M,O,R,Y])
+\end{verbatim}
+in line~\ref{search} on page~\pageref{search} will enumerate the variables in the given order, each time starting with the smallest value in the domain. If the assignment of that value fails, the next value will be tried, and so on. If no more values remain, the search will backtrack to the last previous choice and try its next alternative. This will continue until either
+\begin{itemize}
+\item a valid assignment is found for all variables, and the search {\em succeeds}
+\item no more untested choices remain, the search {\em fails}
+\end{itemize}
+
+\subsection{Step 1}
+The first variable $S$ is aleady assigned to value 9. 
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\Tcircle{S}}{
+ \psset{linestyle=dotted}\CURR\tlput{9}
+}
+\end{center}
+\caption{\label{Step 1}Search Tree Step 1}
+\end{figure}
+Figure~\ref{Step 1} shows the search tree at this point. The top node shows the variable being assigned (here $S$), the label on the edge shows the value that is taken (here 9). The link is dotted, as the variable is already assigned, and no new choice is required.
+ 
+\subsection{Step 2}
+\subsubsection{Alternative $E=4$}
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\CC{S}}{
+ \psset{linestyle=dotted}\pstree{\CC{E}\tlput{9}}{
+   \psset{linestyle=solid}\CURR\tlput{4}
+ }
+}
+\end{center}
+\caption{\label{Step 2, Alternative 1}Search Tree Step 2, Alternative 1}
+\end{figure}
+The next variable is $E$, its smallest value is 4.
+Figure~\ref{Step 2, Alternative 1} shows the search tree at this point. We are currently assigning variable $E$ to value 4. As this is a proper choice, a solid link is used.
+
+Assigning E to 4 will wake the equality constraint
+
+\paragraph{Propagation of equality:}
+
+\[
+91*4+10*R^{2..8}+D^{2..8} = 90*N^{5..8}+Y^{2..8}
+\]
+\[
+\underbrace{91*4+10*R^{2..8}+D^{2..8}}_{386..452} = \underbrace{90*N^{5..8}+Y^{2..8}}_{452..728}
+\]
+\[
+\underbrace{91*4+10*R^{2..8}+D^{2..8} = 90*N^{5..8}+Y^{2..8}}_{452}
+\]
+\[
+N = 5, Y = 2, R = 8, D = 8
+\]
+
+\paragraph{Propagation of alldifferent:} This constraint fails (can't have $R = 8$, $D = 8$)
+
+\subsubsection{Alternative $E = 5$}
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\CC{S}}{
+ \psset{linestyle=dotted}\pstree{\CC{E}\tlput{9}}{
+   \psset{linestyle=solid}\FAIL\tlput{4}
+   \psset{linestyle=solid}\CURR\trput{5}
+ }
+}
+\end{center}
+\caption{\label{Step 2, Alternative 2}Search Tree Step 2, Alternative 2}
+\end{figure}
+We backtrack to the last choice ($E=4$), and then try the next value ($E = 5$). This situation is depicted in figure~\ref{Step 2, Alternative 2}. The left child of node $E$ is marked as a failure, we are currently testing value 5, the second alternative.
+The assignment of value ($E=5$) will trigger both the alldifferent and the equality constraint. Assume that the alldifferent is woken first\footnote{Which of the constraints is woken up first can be difficult to predict without understanding the details of the implementation of the solver}.
+
+\paragraph{Propagation of alldifferent:}
+\[
+N > 5
+\]
+
+\paragraph{Propagation of equality:}
+\[
+91*5+10*R^{2..8}+D^{2..8} = 90*N^{6..8}+Y^{2..8}
+\]
+\[
+\underbrace{91*5+10*R^{2..8}+D^{2..8}}_{477..543} = \underbrace{90*N^{6..8}+Y^{2..8}}_{542..728}
+\]
+\[
+\underbrace{91*5+10*R^{2..8}+D^{2..8} = 90*N^{6..8}+Y^{2..8}}_{542..543}
+\]
+\[
+N = 6, Y \in \{2,3\}, R = 8, D \in \{7..8\}
+\]
+
+\paragraph{Propagation of alldifferent:}
+
+\[
+D = 7
+\]
+
+\paragraph{Propagation of equality:}
+
+\[
+91*5+10*8+7 = 90*6+Y^{2..3}
+\]
+\[
+\underbrace{91*5+10*8+7}_{542} = \underbrace{90*6+Y^{2..3}}_{542..543}
+\]
+\[
+\underbrace{91*5+10*8+7 = 90*6+Y^{2..3}}_{542}
+\]
+\[
+Y = 2
+\]
+\subsection{Further Steps}
+All variables have been assigned, the search succeeds. Figure~\ref{First Solution} shows the resulting search tree. There is only a single variable ($E$) for which an actual choice had to be taken. The last node at the bottom of the tree is a green success node, indicating that a solution was found.
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\CC{S}}{
+ \psset{linestyle=dotted}\pstree{\CC{E}\tlput{9}}{
+   \psset{linestyle=solid}\FAIL\tlput{4}
+   \psset{linestyle=solid}\pstree{\CC{N}\trput{5}}{
+     \psset{linestyle=dotted}\pstree{\CC{D}\trput{6}}{
+     \psset{linestyle=dotted}\pstree{\CC{M}\trput{7}}{
+     \psset{linestyle=dotted}\pstree{\CC{O}\trput{1}}{
+     \psset{linestyle=dotted}\pstree{\CC{R}\trput{0}}{
+     \psset{linestyle=dotted}\pstree{\CC{Y}\trput{8}}{
+     \SUCC\trput{2}
+     }
+     }
+     }
+     }
+     }
+   }
+ }
+}
+\end{center}
+\caption{\label{First Solution}Search Tree, First Solution}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\CC{S}}{
+ \psset{linestyle=dotted}\pstree{\CC{E}\tlput{9}}{
+   \psset{linestyle=solid}\FAIL\tlput{4}
+   \psset{linestyle=solid}\pstree{\CC{N}\trput{5}}{
+     \psset{linestyle=dotted}\pstree{\CC{D}\trput{6}}{
+     \psset{linestyle=dotted}\pstree{\CC{M}\trput{7}}{
+     \psset{linestyle=dotted}\pstree{\CC{O}\trput{1}}{
+     \psset{linestyle=dotted}\pstree{\CC{R}\trput{0}}{
+     \psset{linestyle=dotted}\pstree{\CC{Y}\trput{8}}{
+     \SUCC\trput{2}
+     }
+     }
+     }
+     }
+     }
+   }
+   \psset{linestyle=solid}\FAIL\trput{6}
+   \psset{linestyle=solid}\FAIL\trput{7}
+ }
+}
+\end{center}
+\caption{\label{Complete Search Tree}Complete Search Tree}
+\end{figure}
+
+Table~\ref{Domains after search} shows the state of the domain visualizer after the choice $E=5$. All variables are assigned to a value, we can also see that the {\em alldifferent} constraint is satisfied, as every column contains atmost one assigned variable.
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}\hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+S &\G &\G &\G &\G &\G &\G &\G &\G &\G &\A \\ \hline
+E &\G &\G &\G &\G &\G &\A &\G &\G &\G &\G \\ \hline
+N &\G &\G &\G &\G &\G &\G &\A &\G &\G &\G \\ \hline
+D &\G &\G &\G &\G &\G &\G &\G &\A &\G &\G \\ \hline
+M &\G &\A &\G &\G &\G &\G &\G &\G &\G &\G \\ \hline
+O &\A &\G &\G &\G &\G &\G &\G &\G &\G &\G \\ \hline
+R &\G &\G &\G &\G &\G &\G &\G &\G &\A &\G \\ \hline
+Y & \G&\G &\A &\G &\G &\G &\G &\G &\G &\G \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{Domains after search}Domains after search}
+\end{table}
+
+\section{Solution}
+Taking all the information collected together, we find that the solution of the puzzle is:
+
+\vspace{0.5cm}
+\begin{center}
+\begin{tabular}{rrrrr}
+& 9 & 5 & 6 & 7 \\
++ & 1 & 0 & 8 & 5 \\ \hline
+1 & 0 & 6 & 5 & 2
+\end{tabular}
+\end{center} 
+
+\section{Lessons Learned}
+\begin{itemize}
+\item Constraint models are expressed by variables and constraints.
+\item Problems can have many different models, which can behave quite differently. Choosing the best model is an art.
+\item Constraints can take many different forms.
+\item Propagation deals with the interaction of variables and constraints.
+\item Constraints only communicate via shared variables.
+\item Propagation usually is not sufficient, search may be required to find a solution.
+\item Propagation is data driven, and can be quite complex even for small examples.
+\item The default search uses chronological depth-first backtracking, systematically exploring the complete search space.
+\item The search choices and propagation are interleaved, after every choice some more propagation may further reduce the problem.
+\end{itemize}
+
+\section{Model Variants (*)}
+\subsection{Removing Disequality Constraints}
+\begin{lstlisting}[float,label=sendmory1,caption=Program Sendmory without Disequality Constraints]
+:-module(sendmory).
+:-export(sendmory/1).
+:-lib(ic).
+
+sendmory(L):-
+     L = [S,E,N,D,M,O,R,Y], 
+     L :: 0..9,
+     alldifferent(L),
+     1000*S + 100*E + 10*N + D + 
+     1000*M + 100*O + 10*R + E #= 
+     10000*M + 1000*O + 100*N + 10*E + Y,
+     labeling(L).
+\end{lstlisting}
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}\hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+S &   &   &   &   &   &   &   &   &   &   \\ \hline
+E &   &   &   &   &   &   &   &   &   &   \\ \hline
+N &   &   &   &   &   &   &   &   &   &   \\ \hline
+D &   &   &   &   &   &   &   &   &   &   \\ \hline
+M &   &   &\G &\G &\G &\G &\G &\G &\G &\G \\ \hline
+O &   &   &   &   &   &   &   &   &   &   \\ \hline
+R &   &   &   &   &   &   &   &   &   &   \\ \hline
+Y &   &   &   &   &   &   &   &   &   &   \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{Without Disequality Constraints: Domains After Setup}Without Disequality Constraints: Domains After Setup}
+\end{table}
+
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\CC{S}}{
+   \psset{linestyle=solid}\FAIL\tlput{0}
+   \psset{linestyle=solid}\FAIL\tlput{1}
+    \psset{linestyle=solid}\pstree{\CC{E}\trput{2}}{
+     \psset{linestyle=dotted}\pstree{\CC{N}\trput{8}}{
+      \psset{linestyle=dotted}\pstree{\CC{D}\trput{1}}{
+       \psset{linestyle=solid}\pstree{\CC{M}\trput{7}}{
+        \psset{linestyle=dotted}\pstree{\CC{O}\trput{0}}{
+         \psset{linestyle=dotted}\pstree{\CC{R}\trput{3}}{
+          \psset{linestyle=dotted}\pstree{\CC{Y}\trput{6}}{
+           \psset{linestyle=dotted}\SUCC\trput{5}
+          }
+         }
+        }
+       }
+       \psset{linestyle=solid}\pstree{\CC{M}\trput{9}}{
+        \psset{linestyle=dotted}\pstree{\CC{O}\trput{7}}{
+         \psset{linestyle=dotted}\pstree{\CC{R}\trput{1}}{
+          \psset{linestyle=dotted}\pstree{\CC{Y}\trput{6}}{
+           \psset{linestyle=dotted}\SUCC\trput{7}
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+    \psset{linestyle=solid}\pstree{\CC{E}\trput{3}}{
+     \psset{linestyle=solid}\pstree{\CC{N}\trput{7}}{
+      \psset{linestyle=dotted}\pstree{\CC{D}\trput{1}}{
+       \psset{linestyle=solid}\pstree{\CC{M}\trput{2}}{
+        \psset{linestyle=dotted}\pstree{\CC{O}\trput{0}}{
+         \psset{linestyle=dotted}\pstree{\CC{R}\trput{4}}{
+          \psset{linestyle=dotted}\pstree{\CC{Y}\trput{6}}{
+           \psset{linestyle=dotted}\SUCC\trput{9}
+          }
+         }
+        }
+       }
+      }
+     }
+    }
+}
+\end{center}
+\caption{\label{Without Disequality Constraints: First Three Solutions}Without Disequality Constraints: First Three Solutions}
+\end{figure}
+
+\subsection{Carry Variables with Multiple Equations}
+
+\begin{lstlisting}[float,label=sendmory2,caption=Using Carry Variables and Multiple Equations]
+:- module(sendmory2).
+:-export(sendmory/1).
+:-lib(ic).
+
+sendmory(L):-
+	L=[S,E,N,D,M,O,R,Y],
+	L :: 0..9,
+        [C2,C3,C4,C5] :: 0..1,
+	alldifferent(L),
+	S #\= 0,
+	M #\= 0,
+        M #= C5,
+        S+M+C4 #= 10*C5+O,
+        E+O+C3 #= 10*C4+N,
+        N+R+C2 #= 10*C3+E,
+        D+E    #= 10*C2+Y,
+	labeling(L).
+\end{lstlisting}
+
+\begin{table}[htbp]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}\hline
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\ \hline
+S &\G &\G &\G &\G &\G &\G &\G &\G &\G &\A \\ \hline
+E &\G &\G &   &   &   &   &   &   &   &\G \\ \hline
+N &\G &\G &   &   &   &   &   &   &   &\G \\ \hline
+D &\G &\G &   &   &   &   &   &   &   &\G \\ \hline
+M &\G &\A &\G &\G &\G &\G &\G &\G &\G &\G \\ \hline
+O &\A &\G &\G &\G &\G &\G &\G &\G &\G &\G \\ \hline
+R &\G &\G &   &   &   &   &   &   &   &\G \\ \hline
+Y & \G&\G &   &   &   &   &   &   &   &\G \\ \hline
+\end{tabular}
+\end{center}
+\caption{\label{Sendmory2: Domains after setup}Sendmory2: Domains after setup}
+\end{table}
+
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\CC{S}}{
+ \psset{linestyle=dotted}\pstree{\CC{E}\tlput{9}}{
+   \psset{linestyle=solid}\FAIL\tlput{2}
+   \psset{linestyle=solid}\FAIL\tlput{3}
+   \psset{linestyle=solid}\FAIL\tlput{4}
+   \psset{linestyle=solid}\pstree{\CC{N}\trput{5}}{
+     \psset{linestyle=dotted}\pstree{\CC{D}\trput{6}}{
+     \psset{linestyle=dotted}\pstree{\CC{M}\trput{7}}{
+     \psset{linestyle=dotted}\pstree{\CC{O}\trput{1}}{
+     \psset{linestyle=dotted}\pstree{\CC{R}\trput{0}}{
+     \psset{linestyle=dotted}\pstree{\CC{Y}\trput{8}}{
+     \SUCC\trput{2}
+     }
+     }
+     }
+     }
+     }
+   }
+ }
+}
+\end{center}
+\caption{\label{Sendmory2: First Solution}Sendmory2: First Solution}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\pstree[nodesep=0pt,levelsep=36pt]{\CC{S}}{
+ \psset{linestyle=dotted}\pstree{\CC{E}\tlput{9}}{
+   \psset{linestyle=solid}\FAIL\tlput{2}
+   \psset{linestyle=solid}\FAIL\tlput{3}
+   \psset{linestyle=solid}\FAIL\tlput{4}
+   \psset{linestyle=solid}\pstree{\CC{N}\trput{5}}{
+     \psset{linestyle=dotted}\pstree{\CC{D}\trput{6}}{
+     \psset{linestyle=dotted}\pstree{\CC{M}\trput{7}}{
+     \psset{linestyle=dotted}\pstree{\CC{O}\trput{1}}{
+     \psset{linestyle=dotted}\pstree{\CC{R}\trput{0}}{
+     \psset{linestyle=dotted}\pstree{\CC{Y}\trput{8}}{
+     \SUCC\trput{2}
+     }
+     }
+     }
+     }
+     }
+   }
+   \psset{linestyle=solid}\FAIL\trput{6}
+   \psset{linestyle=solid}\FAIL\trput{7}
+   \psset{linestyle=solid}\FAIL\trput{8}
+ }
+}
+\end{center}
+\caption{\label{Sendmory2: Complete Search Tree}Sendmory2: Complete Search Tree}
+\end{figure}
+
+\subsection{0/1 Variable Model}
+
+\section{Improved Propagation (*)}
+\end{document}

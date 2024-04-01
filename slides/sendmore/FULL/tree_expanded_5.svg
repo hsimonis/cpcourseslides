@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="800px"
+   height="800px"
+   viewBox="-1.5 -1 5.0 6">
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0" y="0.2">S</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0" y1="0" x2="0.0" y2="1" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0.0" y="1.2">E</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="1" x2="-0.5" y2="2" />
+<circle style="fill:red;stroke-width:0.01;stroke:black" cx="-0.5" cy="2" r="0.1" />
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="1" x2="-0.5" y2="2" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="-0.2" y="1.65">4</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="1" x2="0.5" y2="2" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0.5" y="2.2">N</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.5" y1="2" x2="0.5" y2="3" />
+<polygon style="fill:blue;stroke-width:0.01;stroke:black;" points="0.5,3 1.0,3.5 0.0,3.5" />
+<line style="stroke-width:0.02;stroke:yellow;" x1="0.5" y1="2" x2="0.5" y2="3" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.55" y="2.65">6</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="1" x2="0.5" y2="2" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.3" y="1.65">5</text>
+<line style="stroke-width:0.02;stroke:yellow;" x1="0" y1="0" x2="0.0" y2="1" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.05" y="0.65">9</text>
+</svg>
