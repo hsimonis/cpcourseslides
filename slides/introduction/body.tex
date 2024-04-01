@@ -1,0 +1,428 @@
+\begin{frame}
+\frametitle{Objectives}
+\begin{itemize}
+\item Overview of Core Constraint Programming
+\item Three Main Concepts
+\begin{itemize}
+\item Constraint Propagation
+\item Global Constraints
+\item Customizing Search
+\end{itemize}
+%\item Get Some Experience with MiniZinc
+\item Topics will be treated in more detail in later parts of the school
+\item Based on Examples, not Formal Description
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Outline}
+\begin{itemize}
+\item Why Constraint Programming?
+\item Constraint Propagation
+\item Global Constraints
+\item Customizing Search
+%\item Choices in Modelling
+%\item Decomposition
+%\item More Global Constraints
+%\item Methodology
+%\item What is missing?
+\end{itemize}
+\end{frame}
+
+% \begin{frame}
+  % \frametitle{Using MiniZinc IDE}
+  % \begin{itemize}
+  % \item Developed in the Australian NICTA project
+  % \item Maintained by Monash University
+  % \item Modelling tool with multiple back-end solvers
+  % \item Available from \url{https://www.minizinc.org/}
+  % \end{itemize}
+% \end{frame}
+
+
+% \begin{frame}
+% \frametitle{Examples in ECLiPSe}
+% \begin{itemize}
+% \item Open sourced constraint programming language
+% \item Development goes back to 1985
+% \item ECRC, ICL, IC-Parc, PTL, Cisco
+% \item \url{https://eclipseclp.org/}
+% \item Specialities
+% \begin{itemize}
+% \item Develop new solvers for specific domains
+% \item Integration with MIP
+% \end{itemize}
+% \item Not included in bundled MiniZinc IDE
+% \item Specialized visualization tools used here
+  % \begin{itemize}
+  % \item CP-Viz, Simonis et al. 2010
+    % \end{itemize}
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}
+\frametitle{Tutorial Based on ECLiPSe ELearning Course}
+\begin{itemize}
+\item Self-study course in constraint programming
+\item Supported by Cisco Systems and Silicon Valley Community Foundation
+\item Multi-media format, video lectures, slides, handout etc
+\item {\small \url{https://eclipseclp.org/ELearning/index.html}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Also Part of CRT-AI Constraint Week}
+\begin{itemize}
+\item Annual one week course on CP and Optimization in Ireland
+\item Part of national training program for PhD students in AI
+\item \url{https://www.crt-ai.ie/}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Constraint Programming - in a nutshell}
+\begin{itemize}
+\item Declarative description of problems with
+\begin{itemize}
+\item {\em Variables} which range over (finite) sets of values
+\item {\em Constraints} over subsets of variables which restrict possible value combinations
+\item A {\em solution} is a value assignment which satisfies all constraints
+\end{itemize}
+
+\item Constraint propagation/reasoning
+\begin{itemize}
+\item Removing inconsistent values for variables
+\item Detect failure if constraint can not be satisfied
+\item Interaction of constraints via shared variables
+\item Incomplete
+\end{itemize}
+
+\item Search
+\begin{itemize}
+\item User controlled assignment of values to variables
+\item Each step triggers constraint propagation 
+\end{itemize}
+\item Different domains require/allow different methods
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Constraint Programming is Different}
+  \begin{itemize}
+  \item Declarative Programming
+    \begin{itemize}
+    \item Concentrate on what you want
+      \item Not how to get there
+      \item Program != Algorithm
+      \item Program = Model
+    \end{itemize}
+    \item Applied to Combinatorial Problems
+      \begin{itemize}
+        \item No complete polynomial algorithms known (exist?)
+        \item CP less ad-hoc than heuristics
+        \item Models can evolve
+  \end{itemize}
+  \end{itemize}
+  \end{frame}
+    
+\begin{frame}
+  \frametitle{A Subtractive Process}
+  \begin{textblock}{4}(8,-3)
+    \includegraphics[width=4cm]{stages}
+  \end{textblock}
+  \vfill
+  \begin{quote}
+    ``Oh, bosh, as Mr. Ruskin says. Sculpture, per se, is the simplest thing in the world. All you have to do is to take a big chunk of marble and a hammer and chisel, make up your mind what you are about to create and chip off all the marble you don't want.''-Paris Gaulois.
+  \end{quote}
+  
+  {\tiny Source: \url{https://quoteinvestigator.com/2014/06/22/chip-away/}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Basic Process}
+\begin{center}
+\begin{tikzpicture}
+\node[shape=rectangle,fill=pantone127-4] (problem) at (2,5) {Problem};
+\node (human) at (2,4) {Human};
+\node[shape=rectangle,fill=pantone127-4] (model) at (2,3) {Model};
+\node (solver) at (2,2) {Constraint Solver/Search};
+\node[shape=rectangle,fill=pantone157-8] (solution) at (2,1) {Solution};
+\draw[-] (problem) -- (human);
+\draw[->] (human) -- (model);
+\draw[-] (model) -- (solver);
+\draw[->] (solver) -- (solution);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{More Realistic}
+\begin{center}
+\begin{tikzpicture}[xscale=4.0]
+\node[shape=rectangle,fill=pantone127-4] (problem) at (2,5) {Problem};
+\node (human) at (2,4) {Human};
+\node[shape=rectangle,fill=pantone127-4] (model) at (2,3) {Model};
+\node (solver) at (2,2) {Constraint Solver/Search};
+\node[shape=rectangle,fill=pantone24-8] (hangs) at (1,1) {Hangs};
+\node[shape=rectangle,fill=pantone157-8] (solution) at (2,1) {Solution};
+\node[shape=rectangle,fill=pantone24-8] (wrong) at (3,1) {Wrong Solution};
+\draw[-] (problem) -- (human);
+\draw[->] (human) -- (model);
+\draw[-] (model) -- (solver);
+\draw[->] (solver) -- (hangs);
+\draw[->] (solver) -- (solution);
+\draw[->] (solver) -- (wrong);
+\draw[->] (hangs) -- (1,4) -- (human);
+\draw[->] (wrong) -- (3,4) -- (human);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dual Role of Model}
+\begin{itemize}
+\item Allows Human to Express Problem
+\begin{itemize}
+\item Close to Problem Domain
+\item Constraints as Abstractions
+\end{itemize}
+\item Allows Solver to Execute
+\begin{itemize}
+\item Variables as Communication Mechanism
+\item Constraints as Algorithms
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Modelling Frameworks}
+\begin{itemize}
+\item \href{https://www.minizinc.org/}{MiniZinc} (NICTA, Monash University, Australia)
+\item \href{https://github.com/eomahony/Numberjack}{NumberJack} (Insight, Ireland) 
+\item \href{https://www-users.york.ac.uk/peter.nightingale/savilerow//}{EssencePrime/SavilleRow} (UK) 
+\item \href{https://cpmpy.readthedocs.io/en/latest/}{CPMpy} (KU Leuven)
+\item Allow use of multiple back-end solvers
+\item Compile model into variants for each solver
+\item A priori solver independent model(CP, MIP, SAT)
+\end{itemize}
+\end{frame} 
+
+\begin{frame}
+\frametitle{Framework Process}
+\begin{center}
+\begin{tikzpicture}[xscale=2]
+\node[shape=rectangle,fill=pantone127-4] (problem) at (2.5,5) {Problem};
+\node (human) at (2.5,4) {Human};
+\node[shape=rectangle,fill=pantone127-4] (model) at (2.5,3) {Model};
+\node (compile) at (2.5,2) {Compile/Reformulate};
+\node (solver1) at (1,1) {CP};
+\node (solver2) at (2,1) {MIP};
+\node (solver3) at (3,1) {SAT};
+\node (solver4) at (4,1) {Other};
+\node[shape=rectangle,fill=pantone157-8] (solution1) at (1,0) {Solution};
+\node[shape=rectangle,fill=pantone157-8] (solution2) at (2,0) {Solution};
+\node[shape=rectangle,fill=pantone157-8] (solution3) at (3,0) {Solution};
+\node[shape=rectangle,fill=pantone157-8] (solution4) at (4,0) {Solution};
+\draw[-] (problem) -- (human);
+\draw[->] (human) -- (model);
+\draw[-] (model) -- (compile);
+\draw[-] (compile) -- (solver1);
+\draw[-] (compile) -- (solver2);
+\draw[-] (compile) -- (solver3);
+\draw[-] (compile) -- (solver4);
+\draw[->] (solver1) -- (solution1);
+\draw[->] (solver2) -- (solution2);
+\draw[->] (solver3) -- (solution3);
+\draw[->] (solver4) -- (solution4);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+% \begin{frame}
+  % \frametitle{Do It Now!}
+  % \begin{itemize}
+  % \item Download and install Minizinc
+  % \item \url{https://www.minizinc.org/}
+  % \end{itemize}
+% \end{frame}
+
+
+\begin{frame}
+\frametitle{Why use Puzzles as Examples?}
+\begin{itemize}
+\item Easy to understand the problem
+\item Solvable by hand without specialized knowledge
+\item Possible to compare automated to manual solving process
+\end{itemize}
+
+\begin{quote}
+The puzzle, though inanimate, is presented as a solvable problem without lasting negative consequences, a very low-risk low-reward situation. By being a puzzle, the object is attempting to convince the user that it must be completed.
+\end{quote}
+{\tiny Source: \href{https://www.everydayrhetoric.com/2020/03/the-rhetoric-of-puzzles/}{Every Day Rhetoric}}
+\end{frame}
+
+
+\mode<all>{
+\part{Basic Constraint Propagation}
+}
+\begin{frame}
+\partpage
+\end{frame}
+\mode<all>{
+\input{../sendmore/body}
+}
+
+\mode<all>{
+\part{Global Constraints}
+}
+\begin{frame}
+\partpage
+\end{frame}
+\mode<all>{
+\input{../sudoku/body}
+}
+
+\clearpage
+\mode<all>{
+\part{Customizing Search}
+}
+\begin{frame}
+\partpage
+\end{frame}
+\mode<all>{
+\input{../nqueen/body}
+}
+
+
+%% \clearpage
+%% \mode<all>{
+%%   \part{Problem Decomposition}
+%% }
+%% \begin{frame}
+%%   \partpage
+%% \end{frame}
+%% \mode<all>{
+%%   \input{../party/body}
+%%   }
+
+%% \clearpage
+%% \mode<all>{
+%%   \part{More Global Constraints}
+%% }
+%% \begin{frame}
+%%   \partpage
+%% \end{frame}
+%% \mode<all>{
+%%   \input{../car/body}
+%%   }
+
+%% \clearpage
+%% \mode<all>{
+%%   \part{Methodology}
+%% }
+%% \begin{frame}
+%%   \partpage
+%% \end{frame}
+%% \mode<all>{
+%%   \input{../methodology/body}
+%%   }
+
+\clearpage
+\mode<all>{
+\part{What is missing?}
+}
+\begin{frame}
+\partpage
+\end{frame}
+
+\begin{frame}
+\frametitle{Many Specialized Topics}
+\begin{itemize}
+\item How to design efficient core engine
+\item Hybrids with LP/MIP tools
+\item Hybrids with SAT
+\item Symmetry breaking
+\item Use of MDD/BDD to encode sets of solutions
+\item High level modelling tools
+\item Debugging/visualization
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Reformulation}
+\begin{itemize}
+\item Just because the user has modelled it this way, it doesn't mean we have to solve it that way
+\begin{itemize}
+\item Replace some constraint(s) by other, equivalent constraints
+\item Because we don't have that constraint in our system
+\item For performance
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Learning}
+\begin{itemize}
+\item While solving the problem we can learn how to strengthen the model/search 
+\begin{itemize}
+\item Understand which constraints/method contribute to propagation and change schedule
+\item Learn no-good constraints by explaining failure
+\item Adapt search strategy based on search experience
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%% \begin{frame}
+%% \frametitle{Refined Process}
+%% \begin{center}
+%% \begin{tikzpicture}
+%% \node[shape=rectangle,fill=pantone127-4] (problem) at (3,7) {Problem};
+%% \node (human) at (3,6) {Human};
+%% \node[shape=rectangle,fill=pantone127-4] (model) at (3,5) {User Model};
+%% \node (reformulation) at (3,4) {Reformulation};
+%% \node[shape=rectangle,fill=pantone127-4] (implementation) at (3,3) {Implementation Model};
+%% \node (solver) at (3,2) {Constraint Solver/Search};
+%% \node[shape=rectangle,fill=pantone157-8] (solution) at (3,1) {Solution};
+%% \draw[-] (problem) -- (human);
+%% \draw[->] (human) -- (model);
+%% \draw[-] (model) -- (reformulation);
+%% \draw[->] (reformulation) -- (implementation);
+%% \draw[-] (implementation) -- (solver);
+%% \draw[->] (solver) -- (0,2) -- (0,3) -- (implementation);
+%% \draw[->] (solver) -- (solution);
+%% \end{tikzpicture}
+%% \end{center}
+%% \end{frame}
+
+%\begin{frame}
+%\frametitle{What is CP actually used for?}
+%\url{http://hsimonis.wordpress.com}
+%\includegraphics[width=10cm]{blog}
+%\end{frame}
+
+%% \begin{frame}
+%% \frametitle{Exercises}
+%% \begin{itemize}
+%% \item Install Constraint Solver of your Choice
+%% \item MiniZinc (MiningZinc) will be used in later sessions
+%% \item Run Sendmoremoney, Sudoku, Queens examples
+%% \item Can you choose which propagator to use for alldifferent?
+%% \item Can you use different search strategies?
+%% \end{itemize}
+%% \end{frame}
+
+\begin{frame}
+\frametitle{More Learning Resources}
+\begin{itemize}
+\item Survey of Methods, Resources, and Formats for Teaching Constraint Programming
+\begin{itemize}
+\item by Tejas Santanam, Helmut Simonis
+\item \url{https://doi.org/10.48550/arXiv.2403.12717}
+\item Based on survey of community for WTCP 2023
+\item \url{https://hsimonis.github.io/WTCP2023/}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
