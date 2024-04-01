@@ -1,0 +1,11 @@
+\begin{tikzpicture}[xscale=2.4,yscale=1.4]
+  \node[fill=blue!10] (trp) at (2,2) {\shortstack{Travelling\\Repair\\Person}};
+  \node[fill=green!10] (bin) at (2,4) {\shortstack{Bin\\Packing}};
+  \node[fill=green!10] (clustering) at (0,2) {Clustering};
+  \node[fill=green!10] (vrp) at (4,2) {\shortstack{Vehicle\\Routing\\Problem}};
+  \node[fill=green!10] (scheduling) at (2,0) {\shortstack{(Pre-emptive)\\Scheduling}};
+  \draw[gray,dotted] (trp) -- node[right] {\shortstack{balanced\\workload}} (bin);
+  \draw[gray,dotted] (trp) -- node[below] {\shortstack{compact\\work areas}}(clustering);
+  \draw[gray,dotted] (trp) -- node[below] {\shortstack{minimize\\travel}} (vrp);
+  \draw[gray,dotted] (trp) -- node[right] {\shortstack{due dates\\interrupted work}} (scheduling);
+\end{tikzpicture}

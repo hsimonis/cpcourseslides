@@ -1,0 +1,421 @@
+\section{Outpatient Waitlist Management}
+
+
+\begin{frame}
+\frametitle{Joint work with...}
+\begin{itemize}
+\item Mike O'Keeffe
+\item Adrian O'Leary
+\item Barry O'Sullivan
+\item At Insight Centre for Data Analytics, University College Cork
+\end{itemize}
+\end{frame}
+
+\subsection{Introduction}
+
+\begin{frame}
+\frametitle{Real-World Problem}
+\begin{itemize}
+\item Healthcare in Ireland
+\item Wait times for patients are out of control, even before Covid-19
+\item Longer wait times, poorer patient outcomes
+\item Critical to understand where to invest
+\item Currently: no tools to understand how changes affect performance
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Research Challenges}
+\begin{itemize}
+\item How to model hospital environment, many independent actors
+\item Deal with uncertain demand, and uncertain outcomes
+\item Understand where capacity is lost/not used
+\end{itemize}
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Take-Away Message}
+% \begin{itemize}
+% \item Irish hospitals are in deep crisis
+% \item Decision analytics can help to understand and solve problems
+% \item Optimization key aspect of solving problem
+% \item Very hard to affect change
+% \item Stakeholder factors much more complex than in industry 
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}
+% \frametitle{Ireland Background}
+% \begin{tabular}{ccc}
+% \includegraphics[width=3.5cm]{imagesoutpatient/census}
+% &
+% \includegraphics[width=3.5cm]{imagesoutpatient/populationchangebycounty}
+% &
+% \includegraphics[width=3.5cm]{imagesoutpatient/populationtree}
+% \\
+% \shortstack{Population\\Over Time}
+% &
+% \shortstack{Population\\Change\\By County}
+% &
+% \shortstack{Age Distribution\\by Sex}
+% \end{tabular}
+
+% {\scriptsize Source: Census 2016, CSO}
+% \end{frame}
+
+
+% \begin{frame}
+% \frametitle{Health Care in Ireland}
+% \begin{tabular}{cc}
+% \includegraphics[width=5cm]{imagesoutpatient/healthcareexpenditure}
+% &
+% \includegraphics[width=5cm]{imagesoutpatient/healthcareaspartofgnp}\\
+% Total Spend & As Percent of GDP/GNI\\
+% \end{tabular}
+
+% \vspace{0.5cm}
+% {\scriptsize Source: System of Health Accounts 2016, CSO}
+% \end{frame}
+
+% \begin{frame}
+% \frametitle{Compared to Other Countries (2017)}
+% \includegraphics[width=11cm]{imagesoutpatient/oecdhealthspending}
+
+% \vspace{0.5cm}
+% {\scriptsize Source: OECD, Health Care Spend per Capita in PPP USD}
+% \end{frame}
+
+
+
+%% \begin{frame}
+%% \frametitle{Hospital Groups}
+%% \includegraphics[width=5cm]{imagesoutpatient/cho-area-map-with-hospital-groups}
+%% \end{frame}
+
+\begin{frame}
+\frametitle{Hospital Services Overview}
+%\includegraphics[width=11cm]{imagesoutpatient/patienttypes}
+\includegraphics[width=5.5cm]{imagesoutpatient/patienttypes2016}
+{\scriptsize \shortstack{Data: HSE Management Data Report, Dec 2016}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Outpatient Types}
+\begin{description}
+\item[Rapid access] seen within 14 days
+\item[Urgent] seen within 28 days
+\item[Soon] seen within 3 months
+\item[Routine] seen within 12 months (13 weeks, 15 months, 18 months?)
+\end{description}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Outpatient Waitlist Management Process (Simplified)}
+%\includegraphics[width=8cm]{imagesoutpatient/process}
+%\includegraphics[width=8cm]{imagesoutpatient/processsimplified}
+\scalebox{0.45}{
+\begin{tikzpicture}[xscale=2,yscale=1.2]
+  \node[draw=gray,fill=green!20,rounded corners] (referral) at (1,10) {GP Referral};
+  \node[draw=gray,fill=blue!20,rounded corners] (receipt) at (2,9) {\shortstack{Referral Received\\at Hospital}};
+  \node[draw=gray,fill=blue!20,rounded corners] (triage) at (2,8) {Triage};
+  \node[draw=gray,fill=blue!20,rounded corners] (waitlist) at (2,7) {\shortstack{Added to\\a Waitlist}};
+  \node[draw=gray,fill=blue!20,rounded corners] (appointment) at (2,5) {\shortstack{Appointment\\Letter Sent}};
+  \node[draw=gray,fill=brown!20,rounded corners] (notified) at (3,4) {\shortstack{Patient\\Notified}};
+  \node[draw=gray,fill=blue!20,rounded corners] (arrival) at (2,2) {\shortstack{Patient Arrives\\at Clinic}};
+  \node[draw=gray,fill=blue!20,rounded corners] (seen) at (2,1) {\shortstack{Patient Seen\\by Consultant}};
+  \node[draw=gray,fill=blue!20,rounded corners] (removed) at (2,0) {\shortstack{Patient Removed\\from Waitlist}};
+  \draw[->] (referral) -- (2,10) -- (receipt);
+  \draw[->] (receipt) -- (triage);
+  \draw[->] (triage) -- (waitlist);
+  \draw[->,dotted,gray] (triage) -- (1,8) -- (referral);
+  \draw[->] (waitlist) -- node[right] {\shortstack{Waiting\\for Appointment}} (appointment);
+  \draw[->] (appointment) -- (3,5) -- (notified);
+  \draw[->] (notified) -- node[left] {\shortstack{Waiting\\for Clinic}} (3,2) -- (arrival);
+  \draw[->] (arrival) -- (seen);
+  \draw[->] (seen) -- (removed);
+  \draw[<->,thick] (4,9) -- node[right] {Wait Time} (4,1);
+  \draw[<->,thick] (1,5) -- node[left] {4-6 Weeks} (1,2);
+\end{tikzpicture}
+}
+
+\end{frame}
+
+% \begin{frame}
+% \frametitle{National Waitlist Management Protocol (2017)}
+% \begin{tabular}{@{}c@{ }c@{ }c@{ }c@{ }c@{}}
+% \includegraphics[width=2cm]{imagesoutpatient/addingtowaitlist} &
+% \includegraphics[width=2cm]{imagesoutpatient/addingtoplannedprocedure} &
+% \includegraphics[width=2cm]{imagesoutpatient/cancellationprocess} &
+% \includegraphics[width=2cm]{imagesoutpatient/schedulingadmission} &
+% \includegraphics[width=2cm]{imagesoutpatient/dnaprocess} \\
+% \includegraphics[width=2cm]{imagesoutpatient/suspensionprocess} &
+% \includegraphics[width=2cm]{imagesoutpatient/insourcingprocess} &
+% \includegraphics[width=2cm]{imagesoutpatient/outsourcingprocess} &
+% \includegraphics[width=2cm]{imagesoutpatient/validationprocess} &
+% \includegraphics[width=2cm]{imagesoutpatient/removalprocess} 
+% \end{tabular}
+
+% \vspace{0.5cm}
+% {\scriptsize Inpatient/DayCase Process Shown, Outpatient Document Not Final}
+% \end{frame}
+
+\begin{frame}
+\frametitle{The Bad News}
+\includegraphics[width=7cm]{imagesoutpatient/newoutpatientswaitingdec2017}
+{\scriptsize Data: NTPF}
+\end{frame}
+
+
+% \begin{frame}
+% \frametitle{Patients Waiting: The Very Bad News}
+% %\includegraphics[width=9cm]{imagesoutpatient/waitingband2}
+% \includegraphics[width=7cm]{imagesoutpatient/newoutpatientswaitingbands}
+% {\scriptsize Data: NTPF}
+% \end{frame}
+
+%% \begin{frame}
+%% \frametitle{Patients Waiting: Age Groups}
+%% \includegraphics[width=9cm]{imagesoutpatient/waitingagegroup}
+%% \end{frame}
+
+\begin{frame}
+\frametitle{KPI: Waiting Time Percentage}
+\includegraphics[width=7cm]{imagesoutpatient/kpiwaitingtimepercentagedec2017}
+{\scriptsize Data: HSE}
+\end{frame}
+
+%% \begin{frame}
+%% \frametitle{Outpatient Attendance}
+%% \includegraphics[width=10cm]{imagesoutpatient/attendance}
+%% \end{frame}
+
+%% \begin{frame}
+%% \frametitle{Slow Uptake of Electronic Referrals}
+%% \includegraphics[width=7cm]{imagesoutpatient/referralnumbers}
+%% \end{frame}
+
+%% \begin{frame}
+%% \frametitle{Patients Waiting: By Hospital}
+%% \includegraphics[width=7cm]{imagesoutpatient/standalone}
+%% \end{frame}
+
+\begin{frame}
+\frametitle{A Near Universal Problem in Ireland}
+\begin{tabular}{cc}
+By Hospital &
+\includegraphics[width=8cm]{imagesoutpatient/byhospital}\\
+By Speciality &
+\includegraphics[width=8cm]{imagesoutpatient/byspeciality}
+\end{tabular}
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Heatmap: Where is the biggest problem?}
+% \includegraphics[width=11cm]{imagesoutpatient/heatmap}
+% \end{frame}
+
+\subsection{Solution Approach}
+
+\begin{frame}
+\frametitle{Our Brief}
+\begin{itemize}
+\item Concentrate on Outpatients
+\item Develop strategy for appointment decision making
+\item What-if tool to understand the impact of decisions
+\item Support current stakeholders
+\item Not: Build automated appointment scheduling tool
+\end{itemize}
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Project Roles}
+% \begin{itemize}
+% \item Data Analyst
+% \item Modeller
+% \item Outsourced Appointment Manager
+% \item Outsourced Process Owner
+% \item Hospital Waitlist Manager (part)
+% \item Hospital IT Manager (part)
+% \end{itemize}
+% \end{frame}
+
+
+\begin{frame}
+\frametitle{The Appointment Conundrum}
+\begin{itemize}
+\item We have to give ``routine'' appointment before knowing ``urgent'' demand
+\item There is limited capacity
+\item No overtime allowed (Croke Park agreement)
+\item How much capacity to set aside for urgent cases?
+\item How much overbooking is possible?
+\end{itemize}
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Ways to Improve}
+% \begin{itemize}
+% \item Increase capacity
+% \item Reduce DNA (did not attend)
+% \item Decrease ratio return to new appointments
+% \item Move patients between consultants
+% \item Move patients between hospitals
+% \item Avoid unused slots
+% \item Fair treatment of all patients within same category
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}
+\frametitle{Methodology}
+\input{methodology}
+\end{frame}
+
+\begin{frame}
+\frametitle{Demand Data (Not Public)}
+\begin{tabular}{cc}
+\shortstack{Received\\Per Day}&
+\shortstack{Received\\Per Day of Week}\\
+\includegraphics[width=4.5cm]{imagesoutpatient/referralsperday} &
+\includegraphics[width=4.5cm]{imagesoutpatient/referralsdayofweek}
+\end{tabular}
+
+{\small
+\begin{itemize}
+\item Fitting distributions
+\begin{itemize}
+\item Poisson, not good fit
+\item Negative Binomial
+\end{itemize}
+\item Limited Seasonality (unlike Emergency Department)
+\end{itemize}
+}
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Growth Parameters}
+% \begin{itemize}
+% \item Short/medium-term horizon (12-24 months)
+% \begin{itemize}
+% \item Keep demand constant
+% \item Increase with historical rates
+% \item Consider regional population increase 
+% \end{itemize}
+% \item More Complex:
+% \begin{itemize}
+% \item Age structure, birth rates
+% \item More appropriate for long-term demand forecast
+% \end{itemize}
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}
+\frametitle{Waitlist/Clinic Model}
+\input{capacitymodel}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Learning Capacity from Historical Data}
+\includegraphics[width=10cm]{imagesoutpatient/samplecliniccalendar}
+{\small
+\begin{itemize}
+\item Repeat frequency
+\item Capacity
+\item Cancellation frequency
+\item Replacement clinics
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Optimization Problem}
+\begin{itemize}
+\item Assign waiting patients to slots in clinics
+\item Use appropriate clinic for given patient
+\item Make appointments $k_p$ days in advance
+\item Free and reuse slots when patients cancel
+\item Reschedule patients when clinic cancelled
+\item Do not change appointments otherwise
+\item Reserve $u$ slots for urgent cases
+\item Solved for each day
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Waitlist Actions}
+\input{wlactions}
+\end{frame}
+
+\begin{frame}
+\frametitle{Clinic Allocation}
+\input{clinicrun}
+\end{frame}
+
+\subsection{Results}
+\begin{frame}
+\frametitle{Baseline Analysis, Management View}
+\includegraphics[width=10.5cm]{imagesoutpatient/baseline}
+\end{frame}
+
+\begin{frame}
+\frametitle{Scenario: Balance Patients Between Hospitals}
+\includegraphics[width=10.5cm]{imagesoutpatient/balanced}
+\end{frame}
+
+\begin{frame}
+\frametitle{Scenario: Reduce DNA (Did not attend) to 5\%}
+\includegraphics[width=10.5cm]{imagesoutpatient/dna5percent}
+\end{frame}
+
+\begin{frame}
+\frametitle{Scenario: Add Capacity}
+\includegraphics[width=10.5cm]{imagesoutpatient/drnew}
+\end{frame}
+
+% \begin{frame}
+% \frametitle{Scenario: Add More Capacity}
+% \includegraphics[width=10.cm]{imagesoutpatient/drnew2}
+% \end{frame}
+
+\subsection{Summary}
+% \begin{frame}
+% \frametitle{Status}
+% \begin{textblock*}{4cm}(11cm,4cm)
+% \includegraphics[width=4cm]{imagesoutpatient/stimulai.png}
+% \end{textblock*}
+
+% \begin{itemize}
+% \item Initially developed with industrial partner
+% \item Tested and evaluated at hospital
+% \item Actual data used, but manual feed
+% \item Startup company Stimul.AI to commercialize solution
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}
+% \frametitle{The Need is Still There}
+% \includegraphics[width=7cm]{imagesoutpatient/newoutpatientswaitingaug2018}
+% \end{frame}
+
+%% \begin{frame}
+%% \frametitle{Dashboard}
+%% \includegraphics[width=10cm]{imagesoutpatient/ntpf}
+%% \end{frame}
+
+%% \begin{frame}
+%% \frametitle{Key Factor: Return/New Ratio}
+%% \includegraphics[width=10cm]{imagesoutpatient/kpireturnewratio}
+%% \end{frame}
+
+\begin{frame}
+\frametitle{Summary}
+\begin{itemize}
+\item Presented case study from Irish health system
+\item Strategy for outpatient appointments
+\item Mix of analytics, simulation, and optimization
+\item Nation-wide analysis of available data
+\item What-if tool for selected departments
+\end{itemize}
+\end{frame}
+
+
