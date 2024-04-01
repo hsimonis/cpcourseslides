@@ -1,0 +1,119 @@
+\end{document}
+------------------------------------------------------------------------------
+
+\subsection{Problem Variant}
+\begin{frame}
+\frametitle{Problem Variant}
+\begin{block}{9 Spot }
+Fill in numbers from 1 to 9 so that each row, column and block contain each number exactly once. Blocks contain 9 cells, but have irregular shape.
+\end{block}
+Problem and Instance provided by Raphael Finkel
+\end{frame}
+
+\begin{frame}
+\frametitle{Model}
+\begin{itemize}
+\item Same as before
+\item Blocks have irregular shape
+\item Therefore, blocks must be given as part of data
+\item Each cell belongs to exactly one block
+\item Each block contains 9 cells
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Main difference}
+\begin{itemize}
+\item Interaction of rows/columns and blocks
+\item Row and block share between 1 and 5 cells
+\item Sudoku: exactly three cells
+\item This seems to make problem harder
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Initial State (Domain Consistency)}
+\input{spot/dump_gac_1}
+\end{frame}
+
+\begin{frame}
+\frametitle{Propagation Steps (Domain Consistency)}
+\only<1>{\input{spot/dump_gac_1}}
+\only<2>{\input{spot/dump_gac_2}}
+\only<3>{\input{spot/dump_gac_3}}
+\only<4>{\input{spot/dump_gac_4}}
+\only<5>{\input{spot/dump_gac_5}}
+\only<6>{\input{spot/dump_gac_6}}
+\only<7>{\input{spot/dump_gac_7}}
+\only<8>{\input{spot/dump_gac_8}}
+\only<9>{\input{spot/dump_gac_9}}
+\only<10>{\input{spot/dump_gac_10}}
+\only<11>{\input{spot/dump_gac_11}}
+\only<12>{\input{spot/dump_gac_12}}
+\only<13>{\input{spot/dump_gac_13}}
+\only<14>{\input{spot/dump_gac_14}}
+\only<15>{\input{spot/dump_gac_15}}
+\only<16>{\input{spot/dump_gac_16}}
+\only<17>{\input{spot/dump_gac_17}}
+\only<18>{\input{spot/dump_gac_18}}
+\only<19>{\input{spot/dump_gac_19}}
+\only<20>{\input{spot/dump_gac_20}}
+\only<21>{\input{spot/dump_gac_21}}
+\only<22>{\input{spot/dump_gac_22}}
+\only<23>{\input{spot/dump_gac_23}}
+\only<24>{\input{spot/dump_gac_24}}
+\only<25>{\input{spot/dump_gac_25}}
+\only<26>{\input{spot/dump_gac_26}}
+\only<27>{\input{spot/dump_gac_27}}
+\only<28>{\input{spot/dump_gac_28}}
+\vfill
+\hyperlinkframestart<2-28>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-27>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{After Setup (Domain Consistency)}
+\input{spot/dump_gac_29}
+\end{frame}
+
+\begin{frame}
+\frametitle{Shaving Iterations (Domain Consistency)}
+\only<1>{\input{spot/dump_gac_29}}
+\only<2>{\input{spot/dump_gac_30}}
+\only<3>{\input{spot/dump_gac_31}}
+\only<4>{\input{spot/dump_gac_32}}
+\only<5>{\input{spot/dump_gac_33}}
+\only<6>{\input{spot/dump_gac_34}}
+\vfill
+\hyperlinkframestart<2-6>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-5>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Overlap (Domain Consistency)}
+\input{spot/dump_gac_35}
+\end{frame}
+
+
+
+\begin{frame}[label=spotgac]
+\frametitle{9Spot Search (Domain Consistency)}
+\input{spot2} %search tree
+\vfill
+\hyperlinkframestart<2-85>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-84>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}[label=spotbc]
+\frametitle{9Spot Search (Bounds Consistency)}
+\input{spot1} %search tree
+\end{frame}
+
+\input{spot2a} %search tree
+
+\begin{frame}
+\frametitle{Solution}
+
+\end{frame}
+
+-------------------------------------------------------------------------

@@ -1,0 +1,1113 @@
+% $Header: /cvsroot/latex-beamer/latex-beamer/solutions/generic-talks/generic-ornate-15min-45min.en.tex,v 1.5 2007/01/28 20:48:23 tantau Exp $
+
+\documentclass{beamer}
+%\documentclass[handout]{beamer}
+\usepackage{pgfpages}
+\pgfpagesuselayout{2 on 1}[a4paper,border shrink=5mm]
+
+% This file is a solution template for:
+
+% - Giving a talk on some subject.
+% - The talk is between 15min and 45min long.
+% - Style is ornate.
+
+
+
+% Copyright 2004 by Till Tantau <tantau@users.sourceforge.net>.
+%
+% In principle, this file can be redistributed and/or modified under
+% the terms of the GNU Public License, version 2.
+%
+% However, this file is supposed to be a template to be modified
+% for your own needs. For this reason, if you use this file as a
+% template and not specifically distribute it as part of a another
+% package/program, I grant the extra permission to freely copy and
+% modify this file as you see fit and even to delete this copyright
+% notice. 
+
+
+\mode<presentation>
+{
+  \usetheme{Warsaw}
+  % or ...
+
+  \setbeamercovered{transparent}
+  % or whatever (possibly just delete it)
+}
+\usepackage{url}
+\usepackage[normalem]{ulem}
+\usepackage{listings}
+\usepackage{pstricks,pst-node,pst-tree,graphics}
+\newpsobject{showgrid}{psgrid}{subgriddiv=1,griddots=10,gridlabels=6pt}
+\usepackage{amssymb,marvosym}
+\usepackage{colortbl}
+\usepackage{array}
+\newcolumntype{I}{!{\vrule width 1pt}}
+\newlength\savedwidth
+\newcommand\whline{\noalign{\global\savedwidth\arrayrulewidth
+                            \global\arrayrulewidth 1pt}%
+                   \hline
+                   \noalign{\global\arrayrulewidth\savedwidth}}
+\usepackage{textpos}
+\usepackage{textcomp,pifont}
+\newcommand{\CC}[1]{\Tcircle[linestyle=solid]{#1}}
+\newcommand{\REM}[2]{\only<#1>{\textcolor{blue}{\ding{233} \textit{#2}}}}
+\newcommand{\CURR}{\Tcircle[fillstyle=solid,fillcolor=blue,linestyle=solid]{.}}
+\newcommand{\FAILTREE}[2]{\Ttri[fillstyle=solid,fillcolor=red,linestyle=solid]{\hyperlink{#1}{#2}}}
+\newcommand{\FAIL}[1]{\Tcircle[fillstyle=solid,fillcolor=red,linestyle=solid]{\hyperlink{#1}{\ding{54}}}}
+\newcommand{\SUCC}[1]{\Tcircle[fillstyle=solid,fillcolor=green,linestyle=solid]{\hyperlink{#1}{\checkmark}}}
+\newcommand{\G}{\cellcolor[gray]{0.7}}
+\newcommand{\R}{\cellcolor[gray]{0.5}\ding{54}}
+\newcommand{\X}{\cellcolor[gray]{0.5}-}
+\newcommand{\D}{\cellcolor[gray]{0.5}|}
+\newcommand{\A}{\cellcolor[rgb]{0.5,0,0}}
+\newcommand{\Y}{\cellcolor[rgb]{1.0,1.0,0}|}
+\newcommand{\F}{\cellcolor[rgb]{1.0,0,0}\ding{89}}
+
+
+\usepackage[english]{babel}
+% or whatever
+
+\usepackage[latin1]{inputenc}
+% or whatever
+
+\usepackage{times}
+\usepackage[T1]{fontenc}
+% Or whatever. Note that the encoding and the font should match. If T1
+% does not look nice, try deleting the line with the fontenc.
+
+
+\title[Global Constraints] % (optional, use only with long paper titles)
+{Chapter 5: The Finite Domain Solver - Global Constraints}
+
+\subtitle
+{} % (optional)
+
+\author % (optional, use only with lots of authors)
+{Helmut Simonis}
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+
+\institute[4C] % (optional, but mostly needed)
+{Cork Constraint Computation Centre\\Computer Science Department\\University College Cork\\Ireland}
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+\logo{\includegraphics[width=15mm]{4c}}
+%\logo{\includegraphics[width=40mm]{ucclogo}}
+\date[\today] % (optional)
+{ECLiPSe ELearning}
+
+\subject{Talks}
+% This is only inserted into the PDF information catalog. Can be left
+% out. 
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+  \end{frame}
+}
+
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command: 
+
+%\beamerdefaultoverlayspecification{<+->}
+
+
+\begin{document}
+%\textblockcolour{red}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Outline}
+  \tableofcontents[hideallsubsections]
+  % You might wish to add the option [pausesections]
+\end{frame}
+
+
+% Since this a solution template for a generic talk, very little can
+% be said about how it should be structured. However, the talk length
+% of between 15min and 45min and the theme suggest that you stick to
+% the following rules:  
+
+% - Exactly two or three sections (other than the summary).
+% - At *most* three subsections per section.
+% - Talk about 30s to 2min per frame. So there should be between about
+%   15 and 30 frames, all told.
+
+\begin{frame}
+\frametitle{What we want to introduce}
+\begin{itemize}
+\item Global Constraints
+\begin{itemize}
+\item Powerful modelling abstractions
+\item Non-trivial propagation
+\end{itemize}
+\item Consistency Levels
+\begin{itemize}
+\item Tradeoff between speed and propagation
+\item Characterisation of reasoning power
+\end{itemize}
+\item Example: Alldifferent
+\begin{itemize}
+\item 3 variants shown
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Methodology}
+\begin{itemize}
+\item Evaluation on Sudoku puzzle
+\item Comparing
+\begin{itemize}
+\item Initial setup
+\item Search
+\item Performance
+\end{itemize}
+\item Explaining reasoning inside constraint
+\item Link to general classification of global constraints
+\end{itemize}
+\end{frame}
+
+\section{Problem}
+\begin{frame}
+\frametitle{Problem Definition}
+\begin{block}{Sudoku}
+Fill in numbers from 1 to 9 so that each row, column and block contain each number exactly once
+\end{block}
+\begin{tabular}{cc}
+\scalebox{0.7}{\input{problem}}
+&
+\only<2>{\scalebox{0.7}{\input{dump/dump_gac_31}}}
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model}
+\begin{itemize}
+\item A variable for each cell, ranging from 1 to 9
+\item A 9x9 matrix of variables describing the problem
+\item Preassigned integers for the given hints
+\item alldifferent constraints for each row, column and 3x3 block
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Reminder: alldifferent}
+\begin{itemize}
+\item Argument: list of variables
+\item Meaning: variables are pairwise different
+\item Reasoning: Forward Checking (FC)
+\begin{itemize}
+\item When variable is assigned to value, remove the value from all other variables
+\item If a variable has only one possible value, then it is assigned
+\item If a variable has no possible values, then the constraint fails
+\item Constraint is checked whenever one of its variables is assigned
+\item Equivalent to decomposition into binary disequality constraints
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Program}
+
+\begin{frame}[fragile]
+\frametitle{Declarations}
+\begin{semiverbatim}
+:-{\bf{}module}(sudoku).
+:-{\bf{}export}(top/0).
+:-{\bf{}lib}(ic).
+
+top:-
+    problem(Matrix),
+    model(Matrix),
+    {\bf{}writeln}(Matrix).
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Data}        
+\begin{semiverbatim}
+problem([]([](4, _, 8, _, _, _, _, _, _), 
+           [](_, _, _, 1, 7, _, _, _, _), 
+           [](_, _, _, _, 8, _, _, 3, 2), 
+           [](_, _, 6, _, _, 8, 2, 5, _), 
+           [](_, 9, _, _, _, _, _, 8, _), 
+           [](_, 3, 7, 6, _, _, 9, _, _), 
+           [](2, 7, _, _, 5, _, _, _, _), 
+           [](_, _, _, _, 1, 4, _, _, _), 
+           [](_, _, _, _, _, _, 6, _, 4))).
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Main Program}
+\begin{semiverbatim}
+model(Matrix):-
+    Matrix[1..9,1..9] :: 1..9,
+    (for(I,1,9),
+     param(Matrix) do
+        {\bf{}alldifferent}(Matrix[I,1..9]),
+        {\bf{}alldifferent}(Matrix[1..9,I])
+    ),
+    (multifor([I,J],[1,1],[7,7],[3,3]),
+     param(Matrix) do
+        {\bf{}alldifferent}(flatten(Matrix[I..I+2,J..J+2]))
+    ),
+    {\bf{}flatten_array}(Matrix,List),
+    {\bf{}labeling}(List).
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{Domain Visualizer}
+\begin{textblock}{5.5}(10,-2)
+\scalebox{0.68}{\input{dump/dump_fc_1}}
+\end{textblock}
+\begin{itemize}
+\item Problem shown as matrix
+\item Each cell corresponds to a variable
+\item Instantiated: Shows integer value (large)
+\item Uninstantiated: Shows values in domain
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Constraint Visualizer}
+\begin{textblock}{5.5}(10,-2)
+\scalebox{0.68}{\input{dump/dump_fc_25}}
+\end{textblock}
+\begin{itemize}
+\item Problem shown as matrix
+\item Currently active constraint highlighted
+\item Values removed at this step shown in red
+\item Values assigned at this step shown in blue
+\end{itemize}
+\end{frame}
+
+\section{Initial Propagation (Forward Checking)}
+
+\begin{frame}
+\frametitle{Initial State (Forward Checking)}
+\input{dump/dump_fc_1}
+\end{frame}
+
+\begin{frame}
+\frametitle{Propagation Steps (Forward Checking)}
+\only<1>{\input{dump/dump_fc_1}}
+\only<2>{\input{dump/dump_fc_2}}
+\only<3>{\input{dump/dump_fc_3}}
+\only<4>{\input{dump/dump_fc_4}}
+\only<5>{\input{dump/dump_fc_5}}
+\only<6>{\input{dump/dump_fc_6}}
+\only<7>{\input{dump/dump_fc_7}}
+\only<8>{\input{dump/dump_fc_8}}
+\only<9>{\input{dump/dump_fc_9}}
+\only<10>{\input{dump/dump_fc_10}}
+\only<11>{\input{dump/dump_fc_11}}
+\only<12>{\input{dump/dump_fc_12}}
+\only<13>{\input{dump/dump_fc_13}}
+\only<14>{\input{dump/dump_fc_14}}
+\only<15>{\input{dump/dump_fc_15}}
+\only<16>{\input{dump/dump_fc_16}}
+\only<17>{\input{dump/dump_fc_17}}
+\only<18>{\input{dump/dump_fc_18}}
+\only<19>{\input{dump/dump_fc_19}}
+\only<20>{\input{dump/dump_fc_20}}
+\only<21>{\input{dump/dump_fc_21}}
+\only<22>{\input{dump/dump_fc_22}}
+\only<23>{\input{dump/dump_fc_23}}
+\only<24>{\input{dump/dump_fc_24}}
+\only<25>{\input{dump/dump_fc_25}}
+\only<26>{\input{dump/dump_fc_26}}
+\only<27>{\input{dump/dump_fc_27}}
+\only<28>{\input{dump/dump_fc_28}}
+\vfill
+\hyperlinkframestart<2-28>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-27>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{After Setup (Forward Checking)}
+\input{dump/dump_fc_29}
+\end{frame}
+
+\section{Improved Reasoning}
+
+\begin{frame}
+\frametitle{Can we do better?}
+\begin{itemize}
+\item The alldifferent constraint is missing propagation
+\begin{itemize}
+\item How can we do more propagation?
+\item Do we know when we derive all possible information from the constraint?
+\end{itemize}
+\item Constraints only interact by changing domains of variables
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{A Simpler Example}
+\begin{semiverbatim}
+:-{\bf{}lib}(ic).
+
+top:-
+    X :: 1..2,
+    Y :: 1..2,
+    Z :: 1..3,
+    {\bf{}alldifferent}([X,Y,Z]),
+    {\bf{}writeln}([X,Y,Z]).
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{Using Forward Checking}
+\begin{itemize}
+\item No variable is assigned
+\item No reduction of domains
+\item But, values 1 and 2 can be removed from Z
+\item This means that Z is assigned to 3
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Visualization of alldifferent as Graph}
+\begin{textblock}{5.5}(12,-2)
+\scalebox{0.6}{\begin{psmatrix}
+X & & 1 \\
+Y & & 2 \\
+Z & & 3
+\ncline{1,1}{1,3}
+\ncline{1,1}{2,3}
+\ncline{2,1}{1,3}
+\ncline{2,1}{2,3}
+\ncline{3,1}{1,3}
+\ncline{3,1}{2,3}
+\ncline{3,1}{3,3}
+\end{psmatrix}
+}
+\end{textblock}
+\begin{itemize}
+\item Show problem as graph with two types of nodes
+\begin{itemize}
+\item Variables on the left
+\item Values on the right
+\end{itemize}
+\item If value is in domain of variable, show link between them
+\item This is called a {\em bipartite} graph
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{A Simpler Example}
+\begin{textblock}{8}(6,0)
+\only<1>{Value Graph for 
+\begin{semiverbatim}
+X :: 1..2, 
+Y :: 1..2, 
+Z :: 1..3
+\end{semiverbatim}}
+\only<2>{Check interval [1,2]}
+\only<3>{
+\begin{itemize}
+\item Find variables completely contained in interval
+\item There are two: X and Y
+\item This uses up the capacity of the interval
+\end{itemize}
+}
+\only<4>{No other variable can use that interval}
+\only<5>{Only one value left in domain of Z, this can be assigned}
+\end{textblock}
+\input{diff3example}
+\end{frame}
+
+\begin{frame}
+\frametitle{Idea (Hall Intervals)}
+\begin{itemize}
+\item Take each interval of possible values, say size $N$
+\item Find all $K$ variables whose domain is completely contained in interval
+\item If $K>N$ then the constraint is infeasible
+\item If $K=N$ then no other variable can use that interval
+\item Remove values from such variables if their bounds change
+\item If $K<N$ do nothing
+\item Re-check whenever domain bounds change
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Implementation}
+\begin{itemize}
+\item Problem: Too many intervals ($O(n^2)$) to consider
+\item Solution:
+\begin{itemize}
+\item Check only those intervals which update bounds
+\item Enumerate intervals incrementally
+\item Starting from lowest(highest) value
+\item Using sorted list of variables
+\end{itemize}
+\item Complexity: $O(n\log(n))$ in standard implementations
+\item Important: Only looks at min/max bounds of variables
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Bounds Consistency}
+\begin{block}{Definition}
+A constraint achieves {\em bounds consistency}, if for the lower and upper bound of every variable, it is possible to find values for all other variables between their lower and upper bounds which satisfy the constraint.
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Can we do better?}
+\begin{itemize}
+\item Bounds consistency only considers min/max bounds
+\item Ignores ``holes'' in domain
+\item Sometimes we can improve propagation looking at those holes
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Another Simple Example}
+\begin{semiverbatim}
+:-{\bf{}lib}(ic).
+
+top:-
+    X :: [1,3],
+    Y :: [1,3],
+    Z :: 1..3,
+    {\bf{}alldifferent}([X,Y,Z]),
+    {\bf{}writeln}([X,Y,Z]).
+\end{semiverbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Another Simple Example}
+\begin{textblock}{8}(6,0)
+\only<1>{Value Graph for 
+\begin{semiverbatim}
+X :: [1,3], 
+Y :: [1,3], 
+Z :: 1..3
+\end{semiverbatim}}
+\only<2>{\begin{itemize}
+\item Check interval [1,2]
+\item No domain of a variable completely contained in interval
+\item No propagation
+\end{itemize}}
+\only<3>{\begin{itemize}
+\item Check interval [2,3]
+\item No domain of a variable completely contained in interval
+\item No propagation
+\end{itemize}}
+\only<4>{But, more propagation is possible, there are only two solutions}
+\only<5>{Solution 1: assignment in blue}
+\only<6>{Solution 2: assignment in green}
+\end{textblock}
+\input{anotherexample}
+\begin{textblock}{8}(2,0)
+\only<7>{Combining solutions shows that Z=1 and Z=3 are not possible}
+\only<8>{Can we deduce this without enumerating solutions?}
+\end{textblock}
+\end{frame}
+
+\begin{frame}
+\frametitle{Solutions and maximal matchings}
+\begin{itemize}
+\item A {\em Matching} is subset of edges which do not coincide in any node
+\item No matching can have more edges than number of variables
+\item Every solution corresponds to a {\em maximal matching} and vice versa
+\item If a link does not belong to some maximal matching, then it can be removed 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Implementation}
+\begin{itemize}
+\item Possible to compute all links which belong to some matching
+\begin{itemize}
+\item Without enumerating all of them!
+\end{itemize}
+\item Enough to compute {\bf one} maximal matching
+\item Requires algorithm for {\em strongly connected components}
+\item Extra work required if more values than variables
+\item All links (values in domains) which are not supported can be removed
+\item Complexity: $O(n^{1.5}d)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Domain Consistency}
+\begin{block}{Definition}
+A constraint achieves {\em domain consistency}, if for every variable and for every value in its domain, it is possible to find values in the domains of all other variables which satisfy the constraint.
+\end{block}
+\begin{itemize}
+\item Also called {\em generalized arc consistency (GAC)}
+\item or {\em hyper arc consistency}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Can we still do better?}
+\begin{itemize}
+\item NO! This extracts all information from this one constraint
+\item We could perhaps improve speed, but not propagation
+\item But possible to use different model
+\item Or model interaction of multiple constraints
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Should all constraints achieve domain consistency?}
+\begin{itemize}
+\item Domain consistency is usually more expensive than bounds consistency
+\begin{itemize}
+\item Overkill for simple problems
+\item Nice to have choices
+\end{itemize}
+\item For some constraints achieving domain consistency is NP-hard
+\begin{itemize}
+\item We have to live with more restricted propagation
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Improved Propagation in ECLiPSe}
+\begin{itemize}
+\item \texttt{ic\_global} library bounds consistent version
+\item \texttt{ic\_global\_gac} library domain consistent version 
+\item Choose which version to use by using module annotation
+\item Choice can be passed as parameter
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Declarations}
+\begin{semiverbatim}
+:-{\bf{}module}(sudoku).
+:-{\bf{}export}(top/0).
+:-{\bf{}lib}(ic).
+:-{\bf{}lib}(ic_global).
+:-{\bf{}lib}(ic_global_gac).
+
+top:-
+    problem(Matrix),
+    model(ic_global,Matrix),
+    {\bf{}writeln}(Matrix).
+\end{semiverbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Main Program}
+\begin{semiverbatim}
+model(Method,Matrix):-
+    Matrix[1..9,1..9] :: 1..9,
+    (for(I,1,9),
+     param(Method,Matrix) do
+        Method:{\bf{}alldifferent}(Matrix[I,1..9]),
+        Method:{\bf{}alldifferent}(Matrix[1..9,I])
+    ),
+    (multifor([I,J],[1,1],[7,7],[3,3]),
+     param(Method,Matrix) do
+        Method:{\bf{}alldifferent}(flatten(Matrix[I..I+2,
+                                       J..J+2]))
+    ),
+    {\bf{}flatten_array}(Matrix,List),{\bf{}labeling}(List).
+\end{semiverbatim}
+\end{frame}
+
+\subsection{Bounds Consistency}
+
+\begin{frame}
+\frametitle{Initial State (Bounds Consistency)}
+\input{dump/dump_bc_1}
+\end{frame}
+
+\begin{frame}
+\frametitle{Propagation Steps (Bounds Consistency)}
+\only<1>{\input{dump/dump_bc_1}}
+\only<2>{\input{dump/dump_bc_2}}
+\only<3>{\input{dump/dump_bc_3}}
+\only<4>{\input{dump/dump_bc_4}}
+\only<5>{\input{dump/dump_bc_5}}
+\only<6>{\input{dump/dump_bc_6}}
+\only<7>{\input{dump/dump_bc_7}}
+\only<8>{\input{dump/dump_bc_8}}
+\only<9>{\input{dump/dump_bc_9}}
+\only<10>{\input{dump/dump_bc_10}}
+\only<11>{\input{dump/dump_bc_11}}
+\only<12>{\input{dump/dump_bc_12}}
+\only<13>{\input{dump/dump_bc_13}}
+\only<14>{\input{dump/dump_bc_14}}
+\only<15>{\input{dump/dump_bc_15}}
+\only<16>{\input{dump/dump_bc_16}}
+\only<17>{\input{dump/dump_bc_17}}
+\only<18>{\input{dump/dump_bc_18}}
+\only<19>{\input{dump/dump_bc_19}}
+\only<20>{\input{dump/dump_bc_20}}
+\only<21>{\input{dump/dump_bc_21}}
+\only<22>{\input{dump/dump_bc_22}}
+\only<23>{\input{dump/dump_bc_23}}
+\only<24>{\input{dump/dump_bc_24}}
+\only<25>{\input{dump/dump_bc_25}}
+\only<26>{\input{dump/dump_bc_26}}
+\only<27>{\input{dump/dump_bc_27}}
+\only<28>{\input{dump/dump_bc_28}}
+\vfill
+\hyperlinkframestart<2-28>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-27>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{After Setup (Bounds Consistency)}
+\input{dump/dump_bc_29}
+\end{frame}
+
+\subsection{Domain Consistency}
+
+\begin{frame}
+\frametitle{Initial State (Domain Consistency)}
+\input{dump/dump_gac_1}
+\end{frame}
+
+\begin{frame}
+\frametitle{Propagation Steps (Domain Consistency)}
+\only<1>{\input{dump/dump_gac_1}}
+\only<2>{\input{dump/dump_gac_2}}
+\only<3>{\input{dump/dump_gac_3}}
+\only<4>{\input{dump/dump_gac_4}}
+\only<5>{\input{dump/dump_gac_5}}
+\only<6>{\input{dump/dump_gac_6}}
+\only<7>{\input{dump/dump_gac_7}}
+\only<8>{\input{dump/dump_gac_8}}
+\only<9>{\input{dump/dump_gac_9}}
+\only<10>{\input{dump/dump_gac_10}}
+\only<11>{\input{dump/dump_gac_11}}
+\only<12>{\input{dump/dump_gac_12}}
+\only<13>{\input{dump/dump_gac_13}}
+\only<14>{\input{dump/dump_gac_14}}
+\only<15>{\input{dump/dump_gac_15}}
+\only<16>{\input{dump/dump_gac_16}}
+\only<17>{\input{dump/dump_gac_17}}
+\only<18>{\input{dump/dump_gac_18}}
+\only<19>{\input{dump/dump_gac_19}}
+\only<20>{\input{dump/dump_gac_20}}
+\only<21>{\input{dump/dump_gac_21}}
+\only<22>{\input{dump/dump_gac_22}}
+\only<23>{\input{dump/dump_gac_23}}
+\only<24>{\input{dump/dump_gac_24}}
+\only<25>{\input{dump/dump_gac_25}}
+\only<26>{\input{dump/dump_gac_26}}
+\only<27>{\input{dump/dump_gac_27}}
+\only<28>{\input{dump/dump_gac_28}}
+\vfill
+\hyperlinkframestart<2-28>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-27>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{After Setup (Domain Consistency)}
+\input{dump/dump_gac_29}
+\end{frame}
+
+\subsection{Comparison}
+
+\begin{frame}
+\frametitle{Comparison}
+\begin{tabular}{ccc}
+Forward Checking & Bounds Consistency & Domain Consistency \\
+\scalebox{0.55}{
+\input{dump/dump_fc_29}
+}&
+\scalebox{0.55}{
+\input{dump/dump_bc_29}
+}&
+\scalebox{0.55}{
+\input{dump/dump_gac_29}
+}
+\end{tabular}
+\end{frame}
+
+\begin{frame}
+\frametitle{Typical?}
+\begin{itemize}
+\item This does not always happen
+\item Sometimes, two methods produce same amount of propagation
+\item Possible to predict in certain special cases
+\item In general, tradeoff between speed and propagation
+\item Not always fastest to remove inconsistent values early
+\item But often required to find a solution at all
+\end{itemize}
+\end{frame}
+
+\section{Search}
+
+\begin{frame}
+\frametitle{Simple search routine}
+\begin{itemize}
+\item Enumerate variables in given order
+\item Try values starting from smallest one in domain
+\item Complete, chronological backtracking
+\end{itemize}
+\end{frame}
+
+\begin{frame}[label=searchfc]
+\frametitle{Search Tree (Forward Checking)}
+\begin{textblock}{5.5}(9,0)
+\only<1>{\scalebox{0.7}{\input{dump/dump_fc_29}}}
+\only<2>{\scalebox{0.7}{\input{dump/dump_fc_30}}}
+\only<3>{\scalebox{0.7}{\input{dump/dump_fc_31}}}
+\only<7>{\scalebox{0.7}{\input{dump/dump_fc_32}}}
+\only<12>{\scalebox{0.7}{\input{dump/dump_fc_33}}}
+\only<13>{\scalebox{0.7}{\input{dump/dump_fc_34}}}
+\only<16>{\scalebox{0.7}{\input{dump/dump_fc_35}}}
+\only<18>{\scalebox{0.7}{\input{dump/dump_fc_36}}}
+\only<19>{\scalebox{0.7}{\input{dump/dump_fc_37}}}
+\only<20>{\scalebox{0.7}{\input{dump/dump_fc_38}}}
+\end{textblock}
+\input{tree}
+\vfill
+\hyperlinkframestart<2-20>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-19>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+
+\begin{frame}[label=seachbc]
+\frametitle{Search Tree (Bounds Consistency)}
+\begin{textblock}{5.5}(9,0)
+\only<1>{\scalebox{0.7}{\input{dump/dump_bc_29}}}
+\only<3>{\scalebox{0.7}{\input{dump/dump_bc_30}}}
+\only<4>{\scalebox{0.7}{\input{dump/dump_bc_31}}}
+\end{textblock}
+\input{tree1}
+\vfill
+\hyperlinkframestart<2-4>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-3>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}[label=searchgac]
+\frametitle{Search Tree (Domain Consistency)}
+\begin{textblock}{5.5}(9,0)
+\only<1>{\scalebox{0.7}{\input{dump/dump_gac_29}}}
+\only<2>{\scalebox{0.7}{\input{dump/dump_gac_30}}}
+\end{textblock}
+\input{tree2}
+\vfill
+\hyperlinkframestart<2>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Observations}
+\begin{itemize}
+\item Search tree much smaller for bounds/domain consistency
+\item Does not always happen like this
+\item Smaller tree = Less execution time
+\item Less reasoning = Less execution time
+\item Problem: Finding best balance
+\item For Sudoku: not good enough, should not require any search!
+\end{itemize}
+\end{frame}
+
+\subsection{Solution}
+\begin{frame}
+\frametitle{Solution}
+\input{dump/dump_gac_31}
+\end{frame}
+
+
+\section{Lessons Learned}
+
+\begin{frame}
+\frametitle{Global Constraints}
+\begin{itemize}
+\item Powerful modelling abstractions
+\item Efficient reasoning
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Consistency Levels}
+\begin{itemize}
+\item Defined levels of propagation
+\item Tradeoff speed/reasoning
+\item Characterisation of power of constraint
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Alldifferent Variants}
+\begin{itemize}
+\item Forward Checking
+\begin{itemize}
+\item Only reacts when variables are assigned
+\item Equivalent to decomposition into binary constraints
+\end{itemize}
+\item Bounds Consistency
+\begin{itemize}
+\item Typical best compomise speed/reasoning
+\item Works well if no holes in domain
+\end{itemize}
+\item Domain Consistency
+\begin{itemize}
+\item Extracts all information from single constraint
+\item Cost only justified for very hard problems
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{End of Chapter 5}
+\begin{block}{Thank you!}
+Some optional material follows
+\end{block}
+\end{frame}
+
+\appendix
+\section{Optional Material}
+
+\subsection{Complete Example: Domain Consistent Alldifferent}
+
+\begin{frame}[fragile]
+\frametitle{Bigger Example}
+\begin{semiverbatim}
+:-lib(ic).
+:-lib(ic_global_gac).
+
+top:-
+    [X,Y] :: 1..2,
+    Z :: 2..5,
+    [T,U] :: 3..5,
+    V :: [2,4,6,7],
+    ic_global_gac:alldifferent([X,Y,Z,T,U,V]).
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{Making constraint domain consistent}
+\begin{textblock}{8}(6,0)
+\only<1>{Problem shown as bipartite graph}
+\only<2>{Find maximal matching (in blue)}
+\only<3>{Orient graph (edges in matching from variables to values, all others from values to variables), mark edges in matching}
+\only<4>{Find strongly connected components (green and brown), mark their edges}
+\only<5>{Find unmatched value nodes (here node 7, magenta)}
+\only<6>{Find alternating paths from such nodes (in magenta), mark their edges}
+\only<7>{All unmarked edges can be removed}
+\only<8>{Resulting graph, constraint is domain consistent}
+\end{textblock}
+\input{bigexample}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Extended Example}
+\begin{semiverbatim}
+:-lib(ic).
+:-lib(ic_global_gac).
+
+top:-
+    \textcolor{red}{X :: 1..2},
+    \textcolor{red}{Y :: [1,2,7]},
+    Z :: 2..5,
+    [T,U] :: 3..5,
+    V :: [2,4,6,7],
+    ic_global_gac:alldifferent([X,Y,Z,T,U,V]).
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{No propagation in expanded example}
+\begin{textblock}{8}(6,0)
+\only<1>{Problem shown as bipartite graph}
+\only<2>{Find maximal matching (in blue)}
+\only<3>{Orient graph (edges in matching from variables to values, all others from values to variables), mark edges in matching}
+\only<4>{Find strongly connected components (green and brown), mark their edges}
+\only<5>{Find unmatched value nodes (here node 7, magenta)}
+\only<6>{Find alternating paths from such nodes (in magenta), mark their edges}
+\only<7>{Continue with alternating paths}
+\only<8>{Continue with alternating paths, all edges marked, no propagation, constraint is domain consistent}
+\end{textblock}
+\input{bigexample2}
+\end{frame}
+
+\begin{frame}
+\frametitle{Observation}
+\begin{itemize}
+\item A lot of effort for no propagation
+\item Problem: Slows down search without any upside
+\item Constraint is woken every time any domain is changed
+\item How often does the constraint do actual pruning?
+\end{itemize}
+\end{frame}
+
+\subsection{Generic Model}
+
+\begin{frame}
+\frametitle{Generalize Program for different sizes}
+\begin{itemize}
+\item How to generalize program for different sizes (4,9,16,25,36...)
+\item Add parameter R (Order, number of blocks in a row/column)
+\item Size N is square of R
+\item Remove explicit integer bounds by expressions 
+\item Useful to do this change as rewriting of working program
+\end{itemize}
+
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Main Program}
+\begin{semiverbatim}
+model(R,M,Matrix):-
+    N is R*R,Matrix[1..N,1..N] :: 1..N,
+    (for(I,1,N),
+     param(N,M,Matrix) do
+        M:{\bf{}alldifferent}(Matrix[I,1..N]),
+        M:{\bf{}alldifferent}(Matrix[1..N,I])
+    ),
+    (multifor([I,J],[1,1],[N-R+1,N-R+1],[R,R]),
+     param(R,M,Matrix) do
+        M:{\bf{}alldifferent}(flatten(Matrix[I..I+R-1,
+                                 J..J+R-1]))
+    ),
+    {\bf{}flatten_array}(Matrix,List),{\bf{}labeling}(List).
+\end{semiverbatim}
+\end{frame}
+
+\end{document}
+------------------------------------------------------------------------------
+
+\subsection{Problem Variant}
+\begin{frame}
+\frametitle{Problem Variant}
+\begin{block}{9 Spot }
+Fill in numbers from 1 to 9 so that each row, column and block contain each number exactly once. Blocks contain 9 cells, but have irregular shape.
+\end{block}
+Problem and Instance provided by Raphael Finkel
+\end{frame}
+
+\begin{frame}
+\frametitle{Model}
+\begin{itemize}
+\item Same as before
+\item Blocks have irregular shape
+\item Therefore, blocks must be given as part of data
+\item Each cell belongs to exactly one block
+\item Each block contains 9 cells
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Main difference}
+\begin{itemize}
+\item Interaction of rows/columns and blocks
+\item Row and block share between 1 and 5 cells
+\item Sudoku: exactly three cells
+\item This seems to make problem harder
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Initial State (Domain Consistency)}
+\input{spot/dump_gac_1}
+\end{frame}
+
+\begin{frame}
+\frametitle{Propagation Steps (Domain Consistency)}
+\only<1>{\input{spot/dump_gac_1}}
+\only<2>{\input{spot/dump_gac_2}}
+\only<3>{\input{spot/dump_gac_3}}
+\only<4>{\input{spot/dump_gac_4}}
+\only<5>{\input{spot/dump_gac_5}}
+\only<6>{\input{spot/dump_gac_6}}
+\only<7>{\input{spot/dump_gac_7}}
+\only<8>{\input{spot/dump_gac_8}}
+\only<9>{\input{spot/dump_gac_9}}
+\only<10>{\input{spot/dump_gac_10}}
+\only<11>{\input{spot/dump_gac_11}}
+\only<12>{\input{spot/dump_gac_12}}
+\only<13>{\input{spot/dump_gac_13}}
+\only<14>{\input{spot/dump_gac_14}}
+\only<15>{\input{spot/dump_gac_15}}
+\only<16>{\input{spot/dump_gac_16}}
+\only<17>{\input{spot/dump_gac_17}}
+\only<18>{\input{spot/dump_gac_18}}
+\only<19>{\input{spot/dump_gac_19}}
+\only<20>{\input{spot/dump_gac_20}}
+\only<21>{\input{spot/dump_gac_21}}
+\only<22>{\input{spot/dump_gac_22}}
+\only<23>{\input{spot/dump_gac_23}}
+\only<24>{\input{spot/dump_gac_24}}
+\only<25>{\input{spot/dump_gac_25}}
+\only<26>{\input{spot/dump_gac_26}}
+\only<27>{\input{spot/dump_gac_27}}
+\only<28>{\input{spot/dump_gac_28}}
+\vfill
+\hyperlinkframestart<2-28>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-27>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{After Setup (Domain Consistency)}
+\input{spot/dump_gac_29}
+\end{frame}
+
+\begin{frame}
+\frametitle{Shaving Iterations (Domain Consistency)}
+\only<1>{\input{spot/dump_gac_29}}
+\only<2>{\input{spot/dump_gac_30}}
+\only<3>{\input{spot/dump_gac_31}}
+\only<4>{\input{spot/dump_gac_32}}
+\only<5>{\input{spot/dump_gac_33}}
+\only<6>{\input{spot/dump_gac_34}}
+\vfill
+\hyperlinkframestart<2-6>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-5>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Overlap (Domain Consistency)}
+\input{spot/dump_gac_35}
+\end{frame}
+
+
+
+\begin{frame}[label=spotgac]
+\frametitle{9Spot Search (Domain Consistency)}
+\input{spot2} %search tree
+\vfill
+\hyperlinkframestart<2-85>{\beamerreturnbutton{Back to Start}}
+\hyperlinkframeend<1-84>{\beamerskipbutton{Skip Animation}}
+\end{frame}
+
+\begin{frame}[label=spotbc]
+\frametitle{9Spot Search (Bounds Consistency)}
+\input{spot1} %search tree
+\end{frame}
+
+\input{spot2a} %search tree
+
+\begin{frame}
+\frametitle{Solution}
+
+\end{frame}
+
+-------------------------------------------------------------------------

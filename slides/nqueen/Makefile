@@ -13,4 +13,5 @@ handout.pdf: handout.tex standalone.tex body.tex
 	pdflatex handout
 
 clean:
-	rm slides.pdf article.pdf handout.pdf
+	rm -f slides.pdf article.pdf handout.pdf
+	rm -f *.aux *.idx *.out *.snm *.tcp *.toc *.vrb *.tps *.log

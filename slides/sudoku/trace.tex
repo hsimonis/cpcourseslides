@@ -1,0 +1,401 @@
+\documentclass[a4paper]{article}
+\usepackage{pstricks,pst-node,pst-tree,graphics}
+\newcommand{\CC}[1]{\Tcircle[linestyle=solid]{#1}}
+\newcommand{\FAILTREE}[2]{\Ttri[fillstyle=solid,fillcolor=red,linestyle=solid]{#2}}
+\newcommand{\FAIL}[1]{\Tcircle[fillstyle=solid,fillcolor=red,linestyle=solid]{\ding{54}}}
+\newcommand{\SUCC}[1]{\Tcircle[fillstyle=solid,fillcolor=green,linestyle=solid]{\checkmark}}
+\usepackage{amssymb,marvosym}
+\usepackage{textpos}
+\usepackage{textcomp,pifont}
+\usepackage{hyperref}
+\begin{document}
+\author{Helmut Simonis}
+\title{Search Tree Log Format}
+\maketitle
+\begin{abstract}
+In this note we describe the format of the search tree log format which is used to capture information about the search in finite domain constraint programs. The format is a line based sequence of entries of the types TRY, FAIL and SUCCESS.
+\end{abstract}
+
+\section{Trace Format}
+Figure~\ref{Example Trace File} shows an example trace file for a simple search tree. Each line corresponds to one node in the search tree.
+\begin{figure}[htb]
+\begin{verbatim}
+TRY 1 0 2 - -
+TRY 2 1 4 1 v
+TRY 3 2 5 2 v
+FAIL 4 3 5 3 v
+FAIL 5 3 5 6 v
+FAIL 6 3 5 9 v
+TRY 7 2 5 3 v
+FAIL 8 7 5 6 v
+FAIL 9 7 5 9 v
+FAIL 10 2 4 5 v
+FAIL 11 2 4 9 v
+TRY 12 1 4 2 v
+TRY 13 12 5 3 v
+FAIL 14 13 5 6 v
+FAIL 15 13 5 9 v
+TRY 16 12 5 5 v
+FAIL 17 16 5 3 v
+TRY 18 16 7 6 v
+TRY 19 18 8 1 v
+SUCCESS 20 19 7 v
+\end{verbatim}
+\caption{\label{Example Trace File}Example Trace File}
+\end{figure}
+The trace consists of lines of three types. The TRY nodes are internal nodes of the search tree. They describe a variable for which a number of alternative choices must be explored. The FAIL nodes describe the failure of a variable assignment, the SUCCESS nodes describe solutions of the search, i.e. all constraints are satisfied. A tree may have 0, 1 or multiple SUCCESS nodes. 
+
+\subsection{TRY}
+
+A TRY node consists of a single line containing the following fields:
+
+\begin{enumerate}
+\item The string TRY
+\item The current node number, an integer; node numbers start from 1; the implict node 0 is the (virtual) root node
+\item The parent node number, an integer; The parent of the first node is the virtual root node 0.
+\item The name (or number) of the selected variable at this step 
+\item The assigned value, an integer or -; This is the value leading to this node, i.e. the parent's variable value. For the first node, no value is assigned, the symbol - is used.
+\item The link type flag, -, v or f; v is used if value is not preassigned, f is used if value is fixed, - is used for the first node. 
+\end{enumerate}
+
+\subsection{FAIL}
+
+A FAIL node consists of a single line containing the following fields:
+
+\begin{enumerate}
+\item The string FAIL
+\item The current node number, an integer
+\item The parent node number, an integer
+\item The name (or number) of the selected variable at this step 
+\item The assigned value, an integer or -
+\item The link type flag, -, v or f; v is used if value is not preassigned, f is used if value is fixed 
+
+\end{enumerate}
+
+\subsection{SUCCESS}
+
+The SUCCESS node consists of a single line containing the following fields:
+\begin{enumerate}
+\item The string SUCCESS
+\item The current node number, an integer
+\item The parent node number, an integer
+\item The assigned value, an integer
+\item The link type flag, v or f; v is used if value is not preassigned, f is used if value is fixed 
+\end{enumerate}
+
+Note that there is no selected variable field.
+
+\section{Generated Search Tree}
+\subsection{Expanded View}
+Figure~\ref{Expanded Search Tree View} shows the search tree output for the example trace file. All nodes are expanded.
+
+\begin{figure}[htbp]
+\begin{center}
+\scalebox{0.8}{\psset{nodesep=0pt,levelsep=36pt}
+\pstree{\CC{\hyperlink{searchfc<1>}{2}}}{
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<2>}{4}}\trput{1}}{
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<3>}{5}}\trput{2}}{
+   \psset{linestyle=solid}\FAIL{searchfc<4>}\trput{3}
+   \psset{linestyle=solid}\FAIL{searchfc<5>}\trput{6}
+   \psset{linestyle=solid}\FAIL{searchfc<6>}\trput{9}
+  }
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<7>}{5}}\trput{3}}{
+   \psset{linestyle=solid}\FAIL{searchfc<8>}\trput{6}
+   \psset{linestyle=solid}\FAIL{searchfc<9>}\trput{9}
+  }
+  \psset{linestyle=solid}\FAIL{searchfc<10>}\trput{5}
+  \psset{linestyle=solid}\FAIL{searchfc<11>}\trput{9}
+ }
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<12>}{4}}\trput{2}}{
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<13>}{5}}\trput{3}}{
+   \psset{linestyle=solid}\FAIL{searchfc<14>}\trput{6}
+   \psset{linestyle=solid}\FAIL{searchfc<15>}\trput{9}
+  }
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<16>}{5}}\trput{5}}{
+   \psset{linestyle=solid}\FAIL{searchfc<17>}\trput{3}
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<18>}{7}}\trput{6}}{
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{searchfc<19>}{8}}\trput{1}}{
+     \psset{linestyle=solid}\SUCC{searchfc<20>}\trput{7}
+    }
+   }
+  }
+ }
+}
+}
+\end{center}
+\caption{\label{Expanded Search Tree View}Expanded Search Tree View}
+\end{figure}
+
+\subsection{Compact View}
+Figure~\ref{Compact Search Tree View} shows a more compact representation of the search tree useful when the expanded format does not fit in the available space. The search tree in this example has 85 nodes, but only the nodes leading to a solution are expanded. All others are abstracted in failure trees, drawn as triangles, which show the number of internal (TRY) and the numner of FAIL nodes. Figure~\ref{Corresponding Expanded View} shows the expanded tree view for the same search tree.
+
+\begin{figure}[htbp]
+\begin{center}
+\scalebox{ 0.80}{\psset{nodesep=0pt,levelsep=36pt}
+\pstree{\CC{\hyperlink{spotgac1<1>}{4}}}{
+ \psset{linestyle=solid}\FAILTREE{spotgac1<31>}{13 17}\trput{2}
+ \psset{linestyle=solid}\FAILTREE{spotgac1<38>}{3 4}\trput{4}
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<39>}{5}}\trput{5}}{
+  \psset{linestyle=solid}\FAILTREE{spotgac1<48>}{4 5}\trput{2}
+  \psset{linestyle=solid}\FAIL{spotgac1<49>}\trput{4}
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<50>}{6}}\trput{6}}{
+   \psset{linestyle=solid}\FAILTREE{spotgac1<53>}{1 2}\trput{2}
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<54>}{7}}\trput{4}}{
+    \psset{linestyle=solid}\FAILTREE{spotgac1<59>}{2 3}\trput{2}
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<60>}{10}}\trput{9}}{
+     \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<61>}{12}}\trput{6}}{
+      \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<62>}{22}}\trput{2}}{
+       \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<63>}{24}}\trput{2}}{
+        \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<64>}{31}}\trput{1}}{
+         \psset{linestyle=solid}\FAIL{spotgac1<65>}\trput{4}
+         \psset{linestyle=solid}\SUCC{spotgac1<66>}\trput{8}
+        }
+        \psset{linestyle=solid}\FAIL{spotgac1<67>}\trput{7}
+       }
+       \psset{linestyle=solid}\FAIL{spotgac1<68>}\trput{4}
+      }
+      \psset{linestyle=solid}\FAILTREE{spotgac1<73>}{2 3}\trput{8}
+     }
+     \psset{linestyle=solid}\FAIL{spotgac1<74>}\trput{8}
+    }
+   }
+  }
+ }
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<75>}{5}}\trput{6}}{
+  \psset{linestyle=solid}\FAILTREE{spotgac1<80>}{2 3}\trput{2}
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<81>}{6}}\trput{4}}{
+   \psset{linestyle=solid}\FAIL{spotgac1<82>}\trput{2}
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac1<83>}{7}}\trput{5}}{
+    \psset{linestyle=solid}\FAIL{spotgac1<84>}\trput{2}
+    \psset{linestyle=solid}\FAIL{spotgac1<85>}\trput{9}
+   }
+  }
+ }
+}
+}
+\end{center}
+\caption{\label{Compact Search Tree View}Compact Search Tree View}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\scalebox{ 0.35}{\psset{nodesep=0pt,levelsep=36pt}
+\pstree{\CC{\hyperlink{spotgac<1>}{4}}}{
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<2>}{5}}\trput{2}}{
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<3>}{6}}\trput{4}}{
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<4>}{7}}\trput{5}}{
+    \psset{linestyle=solid}\FAIL{spotgac<5>}\trput{6}
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<6>}{12}}\trput{9}}{
+     \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<7>}{19}}\trput{6}}{
+      \psset{linestyle=solid}\FAIL{spotgac<8>}\trput{6}
+      \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<9>}{20}}\trput{9}}{
+       \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<10>}{23}}\trput{6}}{
+        \psset{linestyle=solid}\FAIL{spotgac<11>}\trput{2}
+        \psset{linestyle=solid}\FAIL{spotgac<12>}\trput{8}
+       }
+       \psset{linestyle=solid}\FAIL{spotgac<13>}\trput{8}
+      }
+     }
+     \psset{linestyle=solid}\FAIL{spotgac<14>}\trput{8}
+    }
+   }
+   \psset{linestyle=solid}\FAIL{spotgac<15>}\trput{6}
+  }
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<16>}{6}}\trput{6}}{
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<17>}{10}}\trput{4}}{
+    \psset{linestyle=solid}\FAIL{spotgac<18>}\trput{4}
+    \psset{linestyle=solid}\FAIL{spotgac<19>}\trput{6}
+    \psset{linestyle=solid}\FAIL{spotgac<20>}\trput{8}
+   }
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<21>}{7}}\trput{5}}{
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<22>}{10}}\trput{4}}{
+     \psset{linestyle=solid}\FAIL{spotgac<23>}\trput{5}
+     \psset{linestyle=solid}\FAIL{spotgac<24>}\trput{6}
+     \psset{linestyle=solid}\FAIL{spotgac<25>}\trput{8}
+    }
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<26>}{10}}\trput{9}}{
+     \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<27>}{11}}\trput{5}}{
+      \psset{linestyle=solid}\FAIL{spotgac<28>}\trput{6}
+      \psset{linestyle=solid}\FAIL{spotgac<29>}\trput{8}
+     }
+     \psset{linestyle=solid}\FAIL{spotgac<30>}\trput{6}
+     \psset{linestyle=solid}\FAIL{spotgac<31>}\trput{8}
+    }
+   }
+  }
+ }
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<32>}{5}}\trput{4}}{
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<33>}{6}}\trput{2}}{
+   \psset{linestyle=solid}\FAIL{spotgac<34>}\trput{5}
+   \psset{linestyle=solid}\FAIL{spotgac<35>}\trput{6}
+  }
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<36>}{6}}\trput{6}}{
+   \psset{linestyle=solid}\FAIL{spotgac<37>}\trput{2}
+   \psset{linestyle=solid}\FAIL{spotgac<38>}\trput{5}
+  }
+ }
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<39>}{5}}\trput{5}}{
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<40>}{6}}\trput{2}}{
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<41>}{7}}\trput{4}}{
+    \psset{linestyle=solid}\FAIL{spotgac<42>}\trput{6}
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<43>}{10}}\trput{9}}{
+     \psset{linestyle=solid}\FAIL{spotgac<44>}\trput{6}
+     \psset{linestyle=solid}\FAIL{spotgac<45>}\trput{8}
+    }
+   }
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<46>}{7}}\trput{6}}{
+    \psset{linestyle=solid}\FAIL{spotgac<47>}\trput{4}
+    \psset{linestyle=solid}\FAIL{spotgac<48>}\trput{9}
+   }
+  }
+  \psset{linestyle=solid}\FAIL{spotgac<49>}\trput{4}
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<50>}{6}}\trput{6}}{
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<51>}{7}}\trput{2}}{
+    \psset{linestyle=solid}\FAIL{spotgac<52>}\trput{4}
+    \psset{linestyle=solid}\FAIL{spotgac<53>}\trput{9}
+   }
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<54>}{7}}\trput{4}}{
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<55>}{10}}\trput{2}}{
+     \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<56>}{12}}\trput{6}}{
+      \psset{linestyle=solid}\FAIL{spotgac<57>}\trput{2}
+      \psset{linestyle=solid}\FAIL{spotgac<58>}\trput{8}
+     }
+     \psset{linestyle=solid}\FAIL{spotgac<59>}\trput{8}
+    }
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<60>}{10}}\trput{9}}{
+     \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<61>}{12}}\trput{6}}{
+      \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<62>}{22}}\trput{2}}{
+       \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<63>}{24}}\trput{2}}{
+        \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<64>}{31}}\trput{1}}{
+         \psset{linestyle=solid}\FAIL{spotgac<65>}\trput{4}
+         \psset{linestyle=solid}\SUCC{spotgac<66>}\trput{8}
+        }
+        \psset{linestyle=solid}\FAIL{spotgac<67>}\trput{7}
+       }
+       \psset{linestyle=solid}\FAIL{spotgac<68>}\trput{4}
+      }
+      \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<69>}{22}}\trput{8}}{
+       \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<70>}{24}}\trput{2}}{
+        \psset{linestyle=solid}\FAIL{spotgac<71>}\trput{1}
+        \psset{linestyle=solid}\FAIL{spotgac<72>}\trput{7}
+       }
+       \psset{linestyle=solid}\FAIL{spotgac<73>}\trput{4}
+      }
+     }
+     \psset{linestyle=solid}\FAIL{spotgac<74>}\trput{8}
+    }
+   }
+  }
+ }
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<75>}{5}}\trput{6}}{
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<76>}{6}}\trput{2}}{
+   \psset{linestyle=solid}\FAIL{spotgac<77>}\trput{4}
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<78>}{7}}\trput{5}}{
+    \psset{linestyle=solid}\FAIL{spotgac<79>}\trput{4}
+    \psset{linestyle=solid}\FAIL{spotgac<80>}\trput{9}
+   }
+  }
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<81>}{6}}\trput{4}}{
+   \psset{linestyle=solid}\FAIL{spotgac<82>}\trput{2}
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotgac<83>}{7}}\trput{5}}{
+    \psset{linestyle=solid}\FAIL{spotgac<84>}\trput{2}
+    \psset{linestyle=solid}\FAIL{spotgac<85>}\trput{9}
+   }
+  }
+ }
+}
+}
+\end{center}
+\caption{\label{Corresponding Expanded View}Corresponding Expanded View}
+\end{figure}
+
+In the compact form, quite large trees can be shown in limited space. Figure~\ref{Large Tree} shows a tree with 1938 nodes. 
+\begin{figure}[htbp]
+\begin{center}
+\scalebox{ 0.54}{\psset{nodesep=0pt,levelsep=36pt}
+\pstree{\CC{\hyperlink{spotbc<1>}{1}}}{
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<2>}{2}}\trput{1}}{
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<3>}{4}}\trput{3}}{
+   \psset{linestyle=solid}\FAILTREE{spotbc<383>}{149 231}\trput{2}
+   \psset{linestyle=solid}\FAILTREE{spotbc<509>}{53 73}\trput{4}
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<510>}{5}}\trput{5}}{
+    \psset{linestyle=solid}\FAILTREE{spotbc<719>}{82 127}\trput{2}
+    \psset{linestyle=solid}\FAILTREE{spotbc<996>}{107 170}\trput{4}
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<997>}{6}}\trput{6}}{
+     \psset{linestyle=solid}\FAILTREE{spotbc<1041>}{16 28}\trput{2}
+     \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1042>}{7}}\trput{4}}{
+      \psset{linestyle=solid}\FAILTREE{spotbc<1220>}{70 108}\trput{2}
+      \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1221>}{10}}\trput{9}}{
+       \psset{linestyle=solid}\FAILTREE{spotbc<1272>}{20 31}\trput{4}
+       \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1273>}{12}}\trput{6}}{
+        \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1274>}{22}}\trput{2}}{
+         \psset{linestyle=solid}\FAIL{spotbc<1275>}\trput{1}
+         \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1276>}{23}}\trput{2}}{
+          \psset{linestyle=solid}\FAIL{spotbc<1277>}\trput{1}
+          \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1278>}{24}}\trput{4}}{
+           \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1279>}{31}}\trput{1}}{
+            \psset{linestyle=solid}\FAIL{spotbc<1280>}\trput{4}
+            \psset{linestyle=solid}\SUCC{spotbc<1281>}\trput{8}
+           }
+           \psset{linestyle=solid}\FAILTREE{spotbc<1287>}{2 4}\trput{7}
+          }
+         }
+         \psset{linestyle=solid}\FAILTREE{spotbc<1292>}{2 3}\trput{4}
+         \psset{linestyle=solid}\FAIL{spotbc<1293>}\trput{6}
+        }
+        \psset{linestyle=solid}\FAILTREE{spotbc<1315>}{9 13}\trput{8}
+       }
+       \psset{linestyle=solid}\FAILTREE{spotbc<1332>}{5 12}\trput{8}
+      }
+     }
+    }
+   }
+   \psset{linestyle=solid}\FAILTREE{spotbc<1619>}{121 166}\trput{6}
+  }
+  \psset{linestyle=solid}\FAILTREE{spotbc<1630>}{4 7}\trput{4}
+  \psset{linestyle=solid}\FAILTREE{spotbc<1652>}{9 13}\trput{5}
+  \psset{linestyle=solid}\FAILTREE{spotbc<1702>}{23 27}\trput{6}
+ }
+ \psset{linestyle=solid}\FAILTREE{spotbc<1780>}{36 42}\trput{4}
+ \psset{linestyle=solid}\FAILTREE{spotbc<1817>}{17 20}\trput{5}
+ \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1818>}{2}}\trput{6}}{
+  \psset{linestyle=solid}\FAILTREE{spotbc<1866>}{23 25}\trput{1}
+  \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1867>}{5}}\trput{3}}{
+   \psset{linestyle=solid}\FAILTREE{spotbc<1896>}{13 16}\trput{2}
+   \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1897>}{6}}\trput{4}}{
+    \psset{linestyle=solid}\FAILTREE{spotbc<1907>}{4 6}\trput{2}
+    \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1908>}{7}}\trput{5}}{
+     \psset{linestyle=solid}\FAILTREE{spotbc<1920>}{5 7}\trput{2}
+     \psset{linestyle=solid}\pstree{\CC{\hyperlink{spotbc<1921>}{10}}\trput{9}}{
+      \psset{linestyle=solid}\FAILTREE{spotbc<1926>}{2 3}\trput{4}
+      \psset{linestyle=solid}\FAILTREE{spotbc<1937>}{4 7}\trput{5}
+      \psset{linestyle=solid}\FAIL{spotbc<1938>}\trput{8}
+     }
+    }
+   }
+  }
+ }
+}
+}
+\end{center}
+\caption{\label{Large Tree}Large Tree}
+\end{figure}
+\clearpage
+\appendix
+\input{trace1}
+
+\input{trace2}
+
+\input{trace3}
+
+\input{trace4}
+
+\input{trace5}
+
+\input{trace6}
+
+\input{trace7}
+
+\input{trace8}
+
+\end{document}
