@@ -46,3 +46,9 @@ chapter.aux
 /slides/sudoku/FC/
 /slides/sudoku/DC/
 /slides/ubuntu-latex-fonts-master/
+/code/choco/sendmore/target/
+/code/choco/sudoku/target/
+/code/choco/nqueen/target/
+/code/choco/sendmore/.idea/
+/code/choco/sudoku/.idea/
+/code/choco/nqueen/.idea/
