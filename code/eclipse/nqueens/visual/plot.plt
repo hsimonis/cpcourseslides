@@ -1,0 +1,16 @@
+set terminal pdf;
+set xlabel "Problem Size";
+set ylabel "Time[s]";
+set key left;
+set output "naive/all.pdf";
+plot "naive/all.txt" with points;
+set output "first_fail/all.pdf";
+plot "first_fail/all.txt" with points;
+set output "middle/all.pdf";
+plot "middle/all.txt" with points;
+set output "credit/all100.pdf";
+set xrange [0:100];
+plot "credit/all.txt" with points;
+set output "credit/all200.pdf";
+set xrange [0:200];
+plot "credit/all.txt" with points;

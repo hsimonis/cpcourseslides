@@ -7,6 +7,7 @@ import org.chocosolver.solver.variables.IntVar;
 public class Nqueen {
 
     int[] res;
+    long nrNodes;
     public Nqueen(int n) {
 
         Model model = new Model(n + "-queens problem");
@@ -24,11 +25,16 @@ public class Nqueen {
         Solver solver = model.getSolver();
         if (solver.solve()){
             res = result(vars);
+            nrNodes = solver.getNodeCount();
         }
     }
 
     public int[] result(){
         return res;
+    }
+
+    public long getNrNodes(){
+        return nrNodes;
     }
 
     private int[] result(IntVar[] vars){

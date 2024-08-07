@@ -131,11 +131,11 @@ We can write down our model in a concise mathematical form as a set of constrain
 \begin{verbatim}
 :- lib(lists).
 :- lib(ic).
-:- lib(ic_search).
 
 top:-
     queens(8,Board),
-    search(Board, 0, input_order, indomain, complete).
+    search(Board, 0, input_order, indomain, complete,[]),
+	writeln(Board).
     
 queens(N, Board) :-
     length(Board, N),

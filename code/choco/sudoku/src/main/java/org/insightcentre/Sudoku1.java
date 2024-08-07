@@ -6,9 +6,9 @@ import org.chocosolver.solver.variables.IntVar;
 
 import static org.chocosolver.solver.search.strategy.Search.activityBasedSearch;
 
-public class Sudoku {
+public class Sudoku1 {
     int[][] res;
-    public Sudoku(int[][] data){
+    public Sudoku1(int[][] data, String Consistency){
         Model model = new Model("Sudoku");
         int m = data.length;
         int blockSize = intSqrt(m);
@@ -23,15 +23,16 @@ public class Sudoku {
             }
         }
         for(int i=0;i<m;i++){
-            model.allDifferent(row(i,m,vars)).post();
-            model.allDifferent(column(i,m,vars)).post();
+            model.allDifferent(row(i,m,vars),Consistency).post();
+            model.allDifferent(column(i,m,vars),Consistency).post();
         }
         for(int i=0;i<m;i+=blockSize){
             for(int j=0;j<m;j+=blockSize){
-                model.allDifferent(block(i,j,blockSize,vars)).post();
+                model.allDifferent(block(i,j,blockSize,vars),Consistency).post();
             }
         }
         Solver solver = model.getSolver();
+        solver.setSearch(activityBasedSearch(flatten(vars)));
         if (solver.solve()){
             res = result(vars);
             solver.printStatistics();
