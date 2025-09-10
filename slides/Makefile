@@ -1,4 +1,4 @@
-CHAPTERS = introduction sendmore sudoku nqueen applications methodology visualization
+CHAPTERS = introduction sendmore sudoku nqueen applications methodology visualization minizinc
 
 all: $(CHAPTERS)
 
