@@ -1,5 +1,0 @@
-\frametitle{Conceptual Model (MiniZinc)}
-\lstinputlisting{flowshopconcept.mzn}
-\begin{itemize}
-    \item Data definition not shown for brevity
-\end{itemize}
