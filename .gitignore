@@ -34,17 +34,6 @@ slides.vrb
 slides.tcp
 slides.tps
 chapter.aux
-/slides/nqueen/full/
-/slides/nqueen/compact/
-/slides/nqueen/naive/
-/slides/nqueen/ff/
-/slides/nqueen/first_fail/
-/slides/nqueen/middle/
-/slides/nqueen/middle_min/
-/slides/nqueen/credit/
-/slides/sudoku/BC/
-/slides/sudoku/FC/
-/slides/sudoku/DC/
 /slides/ubuntu-latex-fonts-master/
 /code/choco/sendmore/target/
 /code/choco/sudoku/target/

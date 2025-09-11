@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="800px"
+   height="800px"
+   viewBox="-4.0 -1 12.0 14">
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0" y="0.2">1</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0" y1="0" x2="0.0" y2="1" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0.0" y="1.2">2</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="1" x2="0.0" y2="2" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0.0" y="2.2">3</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="2" x2="0.0" y2="3" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0.0" y="3.2">4</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="3" x2="0.0" y2="4" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="0.0" y="4.2">5</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="-3.0" y2="5" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="-3.0,5 -2.5,5.5 -3.5,5.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="-3.0" y="5.45">145</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="-3.45" y="5.75">209</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="-3.0" y2="5" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="-1.45" y="4.65">4</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="-2.0" y2="5" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="-2.0,5 -1.5,5.5 -2.5,5.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="-2.0" y="5.45">188</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="-2.45" y="5.75">322</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="-2.0" y2="5" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="-0.95" y="4.65">8</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="-1.0" y2="5" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="-1.0,5 -0.5,5.5 -1.5,5.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="-1.0" y="5.45">197</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="-1.45" y="5.75">358</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="-1.0" y2="5" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="-0.45" y="4.65">9</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="0.0" y2="5" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="0.0,5 0.5,5.5 -0.5,5.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="0.0" y="5.45">173</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="-0.45" y="5.75">292</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="0.0" y2="5" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.05" y="4.65">10</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="1.0" y2="5" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="1.0,5 1.5,5.5 0.5,5.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="1.0" y="5.45">200</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="0.55" y="5.75">326</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="1.0" y2="5" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.55" y="4.65">11</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="2.0" y2="5" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="2.0,5 2.5,5.5 1.5,5.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="2.0" y="5.45">184</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="1.55" y="5.75">282</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="2.0" y2="5" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="1.05" y="4.65">12</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="3.0" y2="5" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="3.0" y="5.2">6</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="5" x2="3.0" y2="6" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="3.0" y="6.2">7</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="1.5" y2="7" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="1.5,7 2.0,7.5 1.0,7.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="1.5" y="7.45">4</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="1.05" y="7.75">8</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="1.5" y2="7" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="2.3" y="6.65">4</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="2.5" y2="7" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="2.5,7 3.0,7.5 2.0,7.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="2.5" y="7.45">8</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="2.05" y="7.75">13</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="2.5" y2="7" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="2.8" y="6.65">6</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="3.5" y2="7" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="3.5,7 4.0,7.5 3.0,7.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="3.5" y="7.45">9</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="3.05" y="7.75">15</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="3.5" y2="7" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="3.3" y="6.65">12</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="4.5" y2="7" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="4.5" y="7.2">8</text>
+<line style="stroke-width:0.01;stroke:black;" x1="4.5" y1="7" x2="4.0" y2="8" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="4.0,8 4.5,8.5 3.5,8.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="4.0" y="8.45">2</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="3.55" y="8.75">3</text>
+<line style="stroke-width:0.01;stroke:black;" x1="4.5" y1="7" x2="4.0" y2="8" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="4.3" y="7.65">4</text>
+<line style="stroke-width:0.01;stroke:black;" x1="4.5" y1="7" x2="5.0" y2="8" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="5.0" y="8.2">9</text>
+<line style="stroke-width:0.01;stroke:black;" x1="5.0" y1="8" x2="4.0" y2="9" />
+<circle style="fill:red;stroke-width:0.01;stroke:black" cx="4.0" cy="9" r="0.1" />
+<line style="stroke-width:0.01;stroke:black;" x1="5.0" y1="8" x2="4.0" y2="9" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="4.55" y="8.65">4</text>
+<line style="stroke-width:0.01;stroke:black;" x1="5.0" y1="8" x2="5.0" y2="9" />
+<polygon style="fill:red;stroke-width:0.01;stroke:black;" points="5.0,9 5.5,9.5 4.5,9.5" />
+<text style="fill:black;text-anchor:middle;font-size:0.2;" x="5.0" y="9.45">1</text>
+<text style="fill:black;text-anchor:start;font-size:0.2;" x="4.55" y="9.75">2</text>
+<line style="stroke-width:0.01;stroke:black;" x1="5.0" y1="8" x2="5.0" y2="9" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="5.05" y="8.65">8</text>
+<line style="stroke-width:0.01;stroke:black;" x1="5.0" y1="8" x2="6.0" y2="9" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="6.0" y="9.2">10</text>
+<line style="stroke-width:0.01;stroke:black;" x1="6.0" y1="9" x2="5.5" y2="10" />
+<circle style="fill:red;stroke-width:0.01;stroke:black" cx="5.5" cy="10" r="0.1" />
+<line style="stroke-width:0.01;stroke:black;" x1="6.0" y1="9" x2="5.5" y2="10" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="5.8" y="9.65">4</text>
+<line style="stroke-width:0.01;stroke:black;" x1="6.0" y1="9" x2="6.5" y2="10" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="6.5" y="10.2">11</text>
+<line style="stroke-width:0.01;stroke:black;" x1="6.5" y1="10" x2="6.0" y2="11" />
+<circle style="fill:red;stroke-width:0.01;stroke:black" cx="6.0" cy="11" r="0.1" />
+<line style="stroke-width:0.01;stroke:black;" x1="6.5" y1="10" x2="6.0" y2="11" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="6.3" y="10.65">8</text>
+<line style="stroke-width:0.01;stroke:black;" x1="6.5" y1="10" x2="7.0" y2="11" />
+<text style="fill:blue;text-anchor:middle;font-size:0.4;" x="7.0" y="11.2">12</text>
+<line style="stroke-width:0.01;stroke:black;" x1="7.0" y1="11" x2="7.0" y2="12" />
+<circle style="fill:green;stroke-width:0.01;stroke:black" cx="7.0" cy="12" r="0.2" />
+<line style="stroke-width:0.01;stroke:black;" x1="7.0" y1="11" x2="7.0" y2="12" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="7.05" y="11.65">7</text>
+<line style="stroke-width:0.01;stroke:black;" x1="6.5" y1="10" x2="7.0" y2="11" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="6.8" y="10.65">16</text>
+<line style="stroke-width:0.01;stroke:black;" x1="6.0" y1="9" x2="6.5" y2="10" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="6.3" y="9.65">6</text>
+<line style="stroke-width:0.01;stroke:black;" x1="5.0" y1="8" x2="6.0" y2="9" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="5.55" y="8.65">15</text>
+<line style="stroke-width:0.01;stroke:black;" x1="4.5" y1="7" x2="5.0" y2="8" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="4.8" y="7.65">12</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="6" x2="4.5" y2="7" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="3.8" y="6.65">14</text>
+<line style="stroke-width:0.01;stroke:black;" x1="3.0" y1="5" x2="3.0" y2="6" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="3.05" y="5.65">9</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="4" x2="3.0" y2="5" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="1.55" y="4.65">13</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="3" x2="0.0" y2="4" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.05" y="3.65">2</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="2" x2="0.0" y2="3" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.05" y="2.65">5</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0.0" y1="1" x2="0.0" y2="2" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.05" y="1.65">3</text>
+<line style="stroke-width:0.01;stroke:black;" x1="0" y1="0" x2="0.0" y2="1" />
+<text style="fill:black;text-anchor:start;font-size:0.3;" x="0.05" y="0.65">1</text>
+</svg>
