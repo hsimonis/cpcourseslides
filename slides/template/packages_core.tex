@@ -23,7 +23,6 @@
 \usepackage{subfigure}
 \usepackage{booktabs}
 \usepackage{amsmath}
-\usepackage{hyperref}
 \input{../template/insight-colors}
 \usepackage{xspace}
 \usepackage{mhchem}
@@ -41,8 +40,6 @@
 
 \newcommand{\evalw}{\ensuremath{eval\_world}\xspace}
 
-
- 
 \usepackage{amssymb,marvosym}
 \usepackage{colortbl}
 \usepackage{array}
@@ -55,6 +52,7 @@
 \newcommand{\D}{\cellcolor[gray]{0.5}|}
 \newcommand{\A}{\cellcolor{pantone72-16}} % dark red
 \newcommand{\Y}{\cellcolor{pantone10-7}} % yellow
+\newcommand{\ccg}{\cellcolor{pantone10-7}} % yellow
 \newcommand{\F}{\cellcolor{pantone24-8}\ding{89}} % red
 \newcommand{\links}[1]{\href{../#1/VIDEO/web/web.html}{\beamerbutton{Video}}~\href{../#1/VIDEO/iphone/iphone.m4v}{\beamerbutton{iPhone}}~\href{../#1/slides.pdf}{\beamerbutton{Slides}}~\href{../#1/handout.pdf}{\beamerbutton{Handout}}~\href{http://4c114:8080/dokuwiki/doku.php?id=#1}{\beamerbutton{Wiki}}}
 \newcommand{\pred}[1]{\texttt{#1}}
@@ -107,10 +105,8 @@
 \usepackage{fullpage}
 \usepackage{hyperref}
 }
-\hypersetup{pdfauthor={Helmut Simonis},pdfsubject={Introduction to Constraint Programming},pdfkeywords={Introduction
-    to Constraint Programming;ECLiPSe;ELearning;Saros;Constraint
-    Programming;Prolog;Logic Programming;Insight;Insight Centre for
-    Data Analytics;University College Cork;UCC;MiniZinc;CRT-AI;Choco-Solver;ACP Winterschool 2024}}
+\hypersetup{colorlinks=true,pdfauthor={Helmut Simonis},pdfsubject={Applications, Real-World Examples, Success Stories},pdfkeywords={Applications;Real-World Examples;Success Stories;Insight;Insight Centre for
+    Data Analytics;University College Cork;UCC;MiniZinc;ACP Summer School 2026}}
 
 \mode<presentation>{
 \author{Helmut Simonis}
@@ -119,13 +115,12 @@
 \mode<article>{
 \author{Helmut Simonis\\%
 \\%
-email: \url{helmut.simonis@insight-centre.org}\\%
+email: \url{h.simonis@ucc.ie}\\%
 homepage: \url{http://http://insight-centre.org/}\\%
 \\%
-Insight SFI Centre for Data Analytics\\%
 School of Computer Science and Information Technology\\%
 University College Cork\\
-Ireland}
+Cork, Ireland}
 }
 \institute[Insight] % (optional, but mostly needed)
 {Insight SFI Centre for Data Analytics\\School of Computer Science and Information Technology\\University College Cork\\Ireland}
@@ -141,7 +136,15 @@ Ireland}
 {
   \begin{frame}<beamer>
     \frametitle{Outline}
-    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=show/show/hide]
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection,currentsubsection]
   \end{frame}
 }
 

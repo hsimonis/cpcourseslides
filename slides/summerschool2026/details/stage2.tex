@@ -1,0 +1,99 @@
+\begin{tikzpicture}[xscale=3,yscale=1.5,
+  cat/.style={draw=black,fill=insight-royalblue!10},
+  catalog/.style={fill=insight-yellow!10},
+  produced/.style={fill=insight-lime!10,rounded corners},
+  benchresult/.style={fill=insight-maroon!20,rounded corners},
+  external/.style={draw=black,fill=black!10},
+  bench/.style={fill=insight-maroon!10}]
+  % \node[catalog] (catalog) at (1,20) {\shortstack{Global\\Constraint\\Catalog}};
+  % \node[bench] (posexamples) at (2,21) {\shortstack{Fixed Sizes\\Positive\\Examples}};
+  % \node[bench] (inputdata) at (3,21) {\shortstack{Input\\Data}};
+  % \node[cat] (transformation) at (4,21) {\shortstack{Transformation\\Generator}};
+  % \node[cat] (patterngenerator) at (1,19) {\shortstack{Pattern\\Generator}};
+  % \node[cat] (seeker) at (2,19) {\shortstack{Find Global\\Constraint\\Pattern}};
+  % \node[cat] (binaryseeker) at (3,19) {\shortstack{Find Binary\\Constraint\\Pattern}};
+  % \node[cat] (binarypatterngenerator) at (4,19) {\shortstack{Binary\\Pattern\\Generator}};
+   \node[produced] (models) at (2,17) {\shortstack{Size\\Specific\\Models}};
+  % \node[bench] (negexamples) at (3,18) {\shortstack{Negative\\Examples}};
+  % \node[cat] (checker) at (3,17) {Checker};
+  % \node[produced] (rejectionrate) at (4,17) {\shortstack{Rejection\\Rate}};
+  % \node[cat] (checker2) at (3,16) {Checker};
+  % \node[bench] (testcases) at (3,15) {Testcases};
+  % \node[benchresult] (prediction) at (4,16) {Prediction};
+    % \draw[->] (catalog) -- (seeker);
+  % \draw[->] (posexamples) -- (seeker);
+  % \draw[->] (inputdata) -- (seeker);
+  % \draw[->] (inputdata) -- (binarypatterngenerator);
+  % \draw[->] (patterngenerator) -- (seeker);
+  % \draw[->] (posexamples) -- (binaryseeker);
+  % \draw[->] (inputdata) -- (binaryseeker);
+% \draw[->] (transformation) -- (binaryseeker);
+% \draw[->] (transformation) -- (seeker);
+  % \draw[->] (binarypatterngenerator) -- (binaryseeker);
+  % \draw[->] (seeker) -- (models);
+  % \draw[->] (binaryseeker) -- (models);
+  % \draw[->] (models) -- (checker);
+  % \draw[->] (negexamples) -- (checker);
+  % \draw[->] (checker) -- (rejectionrate);
+  % \draw[->] (models) -- (checker2);
+  % \draw[->] (testcases) -- (checker2);
+  % \draw[->] (checker2) -- (prediction);
+  % \draw[dotted,->] (rejectionrate) -- (prediction);
+
+  
+  \node[cat] (formula) at (1,16) {\shortstack{Parameter\\Formula\\Generator}};
+  \node[cat] (generalizer) at (2,15) {Generalizer};
+  \node[catalog] (catalog2) at (1,14) {\shortstack{Global\\Constraint\\Catalog}};
+  \node[cat] (reduction) at (2,14) {\shortstack{Model\\Reduction}};
+  \node[produced] (genericmodel) at (2,13) {\shortstack{Generic\\Model}};
+  \node[bench] (newsizetestcases) at (3,14) {\shortstack{New Size\\Testcases}};
+  \node[cat] (checker3) at (3,13) {Checker};
+  \node[benchresult] (newsizeprediction) at (4,13) {\shortstack{New Size\\Prediction}};
+  \draw[->] (formula) -- (generalizer);
+  \draw[->] (generalizer) -- (reduction);
+  \draw[->] (reduction) -- (genericmodel);
+  \draw[->] (catalog2) -- (reduction);
+  \draw[->] (genericmodel) -- (checker3);
+  \draw[->] (newsizetestcases) -- (checker3);
+  \draw[->] (checker3) -- (newsizeprediction);
+  
+  
+  % \node[cat] (descriptiongenerator) at (1,12) {\shortstack{Description\\Generator}};
+  % \node[cat] (codegeneration) at (2,12) {\shortstack{Code\\Generation}};
+  % \node[produced] (generatedinput) at (3,12) {\shortstack{MiniZinc\\Input\\Data}};
+  % \node[produced] (description) at (1,11) {\shortstack{Natural Lang.\\Description}};
+  % \node[produced] (code) at (2,11) {\shortstack{MiniZinc\\Code}};
+  % \node[cat] (reportgen) at (2,10) {\shortstack{Report\\Generator}};
+  % \node[produced] (report) at (2,9) {\shortstack{Acquisition\\Report}};
+  % \node[external] (solver) at (3,11) {\shortstack{Backend\\Solver}};
+  % \node[produced] (solutions) at (4,11) {\shortstack{Generated\\Solutions}};
+  % \node[cat] (filter) at (4,10) {Filter};
+  % \node[bench] (benchdata) at (3,10) {\shortstack{Positive Ex.\\Negative Ex.\\Testcases}};
+  % \node[benchresult] (extra) at (4,9) {\shortstack{Extra\\Solutions}};
+   % \draw[->] (descriptiongenerator) -- (description);
+  % \draw[->] (codegeneration) -- (code);
+  % \draw[->] (codegeneration) -- (generatedinput);
+  % \draw[->] (code) -- (solver);
+  % \draw[->] (generatedinput) -- (solver);
+  % \draw[->] (code) -- (reportgen);
+  % \draw[->] (description) -- (reportgen);
+  % \draw[->] (reportgen) -- (report);
+  % \draw[->] (solver) -- (solutions);
+  % \draw[->] (solutions) -- (filter);
+  % \draw[->] (benchdata) -- (filter);
+  % \draw[->] (filter) -- (extra);
+  % \draw[->] (extra) -- (3,9) -- (reportgen);
+  
+  
+   \draw[->] (models) -- (formula);
+   \draw[->] (models) -- (generalizer);
+  
+ 
+  
+  % \draw[->] (genericmodel) -- (codegeneration);
+  % \draw[->] (genericmodel) -- (descriptiongenerator);
+  
+  \draw[dotted] (0.5,17) -- (1,17) -- (2,16) -- (2.5,16) -- (2.5,14.5) -- node[near end,above] {Size Specific Model} (4.5,14.5);
+%  \draw[dotted] (0.5,12.5) -- node[at start,above right] {Generic Model} node[at end,below left] {Working CP Program} (4.5,12.5);
+ \draw[dotted] (0.5,12.5) -- node[at start,above right] {Generic Model}  (4.5,12.5);
+\end{tikzpicture}

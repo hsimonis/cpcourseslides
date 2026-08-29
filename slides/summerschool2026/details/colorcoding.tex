@@ -1,0 +1,16 @@
+\begin{tikzpicture}[xscale=3,yscale=2,
+  cat/.style={draw=black,fill=insight-royalblue!10},
+  catalog/.style={fill=insight-yellow!10},
+  produced/.style={fill=insight-lime!10,rounded corners},
+  benchresult/.style={fill=insight-maroon!20,rounded corners},
+  external/.style={draw=black,fill=black!10},
+  action/.style={fill=insight-burntorange!10},
+  bench/.style={fill=insight-maroon!10}]
+  \node[cat] () at (1,2) {\shortstack{CAT\\Module}};
+  \node[produced] () at (2,2) {\shortstack{Data\\Produced}};
+  \node[bench] () at (3,2) {\shortstack{PTHG21\\Benchmark\\Input Data}};
+  \node[benchresult] () at (4,2) {\shortstack{Produced\\Benchmark\\Results}};
+  \node[catalog] () at (1,1) {\shortstack{Global\\Constraint\\Catalog}};
+  \node[external] () at (2,1) {\shortstack{External\\Actor}};
+  \node[action] () at (3,1) {\shortstack{Action\\Outside\\CAT}};
+\end{tikzpicture}
